@@ -1,0 +1,16 @@
+plugins {
+    id 'com.github.arcticlampyrid.gradle-git-version' version '1.0.4'
+}
+
+allprojects { project ->
+    group 'io.github.joke.objects'
+    version rootProject.version
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+wrapper {
+    gradleVersion = '7.4.2'
+}

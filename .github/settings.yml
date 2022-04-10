@@ -1,8 +1,8 @@
 # These settings are synced to GitHub by https://probot.github.io/apps/settings/
 repository:
-  name: template
-  description: template repository with replease-please pipeline
-  topics: github, template
+  name: objects
+  description: objects annotation processor
+  topics: java, annotation-processor
   private: false
   has_issues: true
   has_projects: false

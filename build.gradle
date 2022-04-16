@@ -9,6 +9,13 @@ allprojects { project ->
     repositories {
         mavenCentral()
     }
+
+    pluginManager.withPlugin('base') {
+        tasks.withType(JavaCompile) {
+            options.release = 8
+        }
+    }
+
 }
 
 wrapper {

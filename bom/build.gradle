@@ -1,0 +1,16 @@
+plugins {
+    id 'java-platform'
+}
+
+javaPlatform {
+    allowDependencies()
+}
+
+dependencies {
+
+    constraints {
+        api project(':annotations')
+        api project(':processor')
+    }
+
+}

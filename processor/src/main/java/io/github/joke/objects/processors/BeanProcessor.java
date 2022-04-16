@@ -1,10 +1,12 @@
 package io.github.joke.objects.processors;
 
 import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 import io.github.joke.objects.generator.GettersGenerator;
+import io.github.joke.objects.generator.PropertiesGenerator;
 
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.TypeElement;
@@ -25,10 +27,12 @@ public class BeanProcessor extends DeferrableProcessor {
         final ClassName implementationName = className.peerClass(className.simpleName() + "Impl");
 
         final Set<MethodSpec> getters = new GettersGenerator().generate(element);
+        final Set<FieldSpec> properties = new PropertiesGenerator().generate(element);
 
         final TypeSpec spec = classBuilder(implementationName)
                 .addSuperinterface(element.asType())
                 .addModifiers(PUBLIC)
+                .addFields(properties)
                 .addMethods(getters)
                 .build();
 

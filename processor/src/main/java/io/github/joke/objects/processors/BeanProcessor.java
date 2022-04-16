@@ -7,6 +7,7 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 import io.github.joke.objects.generator.GettersGenerator;
 import io.github.joke.objects.generator.PropertiesGenerator;
+import io.github.joke.objects.generator.SettersGenerator;
 
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.TypeElement;
@@ -27,6 +28,7 @@ public class BeanProcessor extends DeferrableProcessor {
         final ClassName implementationName = className.peerClass(className.simpleName() + "Impl");
 
         final Set<MethodSpec> getters = new GettersGenerator().generate(element);
+        final Set<MethodSpec> setters = new SettersGenerator().generate(element);
         final Set<FieldSpec> properties = new PropertiesGenerator().generate(element);
 
         final TypeSpec spec = classBuilder(implementationName)
@@ -34,6 +36,7 @@ public class BeanProcessor extends DeferrableProcessor {
                 .addModifiers(PUBLIC)
                 .addFields(properties)
                 .addMethods(getters)
+                .addMethods(setters)
                 .build();
 
         return JavaFile.builder(implementationName.packageName(), spec)

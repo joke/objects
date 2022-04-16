@@ -49,6 +49,26 @@ class BeanTest extends Specification {
         constructors.size() == 1
     }
 
+    def 'field attributes'() {
+        setup:
+        def field = findFields(PersonImpl, {it.name == 'name'}, TOP_DOWN).first()
+
+        expect:
+        isPrivate field
+        isNotFinal field
+        isNotStatic field
+    }
+
+    def 'field with interface type'() {
+        setup:
+        def field = findFields(PersonImpl, {it.name == 'parents'}, TOP_DOWN).first()
+
+        expect:
+        isPrivate field
+        isNotFinal field
+        isNotStatic field
+    }
+
     def 'has getter'() {
         setup:
         def methods = findMethods(PersonImpl, {it.name == 'getName'})
@@ -62,6 +82,36 @@ class BeanTest extends Specification {
             method.parameterCount == 0
             method.returnType == String
         }
+    }
+
+    def 'has setter with interface return type'() {
+        setup:
+        def methods = findMethods(PersonImpl, {it.name == 'setName'})
+
+        expect:
+        methods.size() == 1
+        verifyAll(methods[0]) {method ->
+            isPublic method
+            isNotFinal method
+            isNotStatic method
+            method.returnType == void.class
+            verifyAll(method.parameters) {
+                size() == 1
+                first().name == 'name'
+                first().type == String
+            }
+        }
+    }
+
+    def 'setter sets field with interface return type'() {
+        setup:
+        def person = new PersonImpl()
+        person.parents = [person]
+
+        expect:
+        def field = findFields(PersonImpl, {it.name == 'parents'}, TOP_DOWN).first()
+        ReflectionUtils.makeAccessible(field)
+        field.get(person) == [person]
     }
 
     def 'getter returns field'() {
@@ -90,24 +140,36 @@ class BeanTest extends Specification {
         }
     }
 
-    def 'field attributes'() {
+    def 'has setter'() {
         setup:
+        def methods = findMethods(PersonImpl, {it.name == 'setName'})
+
+        expect:
+        methods.size() == 1
+        verifyAll(methods[0]) {method ->
+            isPublic method
+            isNotFinal method
+            isNotStatic method
+            method.returnType == void.class
+            verifyAll(method.parameters) {
+                size() == 1
+                first().name == 'name'
+                first().type == String
+            }
+        }
+    }
+
+    def 'setter sets field'() {
+        setup:
+        def person = new PersonImpl()
+        person.name = 'John Doe'
+
+        expect:
         def field = findFields(PersonImpl, {it.name == 'name'}, TOP_DOWN).first()
-
-        expect:
-        isPrivate field
-        isNotFinal field
-        isNotStatic field
+        ReflectionUtils.makeAccessible(field)
+        field.get(person) == 'John Doe'
     }
 
-    def 'field with interface type'() {
-        setup:
-        def field = findFields(PersonImpl, {it.name == 'parents'}, TOP_DOWN).first()
 
-        expect:
-        isPrivate field
-        isNotFinal field
-        isNotStatic field
-    }
 
 }

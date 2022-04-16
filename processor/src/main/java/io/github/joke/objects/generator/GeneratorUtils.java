@@ -8,6 +8,7 @@ import static java.util.stream.Collectors.toSet;
 import static com.google.auto.common.MoreTypes.isTypeOf;
 import static javax.lang.model.element.Modifier.STATIC;
 import static org.apache.commons.lang3.RegExUtils.removeFirst;
+import static org.apache.commons.lang3.RegExUtils.replacePattern;
 import static org.apache.commons.lang3.StringUtils.startsWithAny;
 import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
@@ -16,6 +17,10 @@ public final class GeneratorUtils {
     public static String determinePropertyName(final ExecutableElement element) {
         final String strippedName = removeFirst(element.getSimpleName().toString(), "^(get|is)");
         return uncapitalize(strippedName);
+    }
+
+    public static String determineSetterName(final ExecutableElement element) {
+        return replacePattern(element.getSimpleName().toString(), "^(get|is)", "set");
     }
 
     public static Set<ExecutableElement> filterGetters(final Collection<ExecutableElement> elements) {
@@ -27,4 +32,5 @@ public final class GeneratorUtils {
                 .filter(method -> startsWithAny(method.getSimpleName(), "get", "is"))
                 .collect(toSet());
     }
+
 }

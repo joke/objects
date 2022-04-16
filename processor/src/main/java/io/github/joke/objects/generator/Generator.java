@@ -4,6 +4,6 @@ import javax.lang.model.element.TypeElement;
 
 public interface Generator<T> {
 
-    T generate(TypeElement type);
+    T generate(TypeElement element);
 
 }

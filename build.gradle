@@ -13,6 +13,7 @@ allprojects { project ->
     pluginManager.withPlugin('base') {
         tasks.withType(JavaCompile) {
             options.release = 8
+            options.compilerArgs << '-parameters'
         }
     }
 

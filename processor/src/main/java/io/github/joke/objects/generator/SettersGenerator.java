@@ -3,6 +3,7 @@ package io.github.joke.objects.generator;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 
+import javax.inject.Inject;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import java.util.List;
@@ -16,10 +17,16 @@ import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PUBLIC;
 import static javax.lang.model.util.ElementFilter.methodsIn;
 
-public class SettersGenerator implements Generator<Set<MethodSpec>> {
+public class SettersGenerator {
 
-    @Override
-    public Set<MethodSpec> generate(final TypeElement element) {
+    private final TypeElement element;
+
+    @Inject
+    public SettersGenerator(final TypeElement element) {
+        this.element = element;
+    }
+
+    public Set<MethodSpec> getSetters() {
         final List<ExecutableElement> methods = methodsIn(element.getEnclosedElements());
 
         return filterGetters(methods).stream()

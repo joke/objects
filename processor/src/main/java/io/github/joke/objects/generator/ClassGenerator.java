@@ -4,6 +4,7 @@ import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeSpec;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.inject.Inject;
@@ -41,7 +42,8 @@ public class ClassGenerator {
         return builder.superclass(element.asType());
     }
 
-    private AnnotationSpec getGeneratedAnnotation() {
+    @VisibleForTesting
+    protected AnnotationSpec getGeneratedAnnotation() {
         final boolean isJava9 = compare(processingEnvironment.getSourceVersion(), RELEASE_8) > 0;
         final String generatorAnnotationPackage = isJava9 ? "javax.annotation.processing" : "javax.annotation";
         return AnnotationSpec.builder(ClassName.get(generatorAnnotationPackage, "Generated"))

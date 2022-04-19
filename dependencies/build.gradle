@@ -19,6 +19,7 @@ dependencies {
         api 'com.squareup:javapoet:1.13.0'
         api 'javax.annotation:javax.annotation-api:1.2'
         api 'org.apache.commons:commons-lang3:3.12.0'
+        api 'org.jetbrains:annotations:23.0.0'
     }
 
 }

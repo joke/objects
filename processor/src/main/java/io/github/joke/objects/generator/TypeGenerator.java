@@ -5,11 +5,13 @@ import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 import javax.lang.model.element.TypeElement;
 import java.util.Set;
 
+@NotNull
 public class TypeGenerator {
 
     private final Set<MethodSpec> methods;

@@ -10,11 +10,13 @@ import dagger.multibindings.IntoMap;
 import io.github.joke.objects.handlers.BeanHandler;
 import io.github.joke.objects.handlers.Handler;
 import io.github.joke.objects.handlers.ValueHandler;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 
+@NotNull
 public interface AnnotationHandlerBuilderFactory {
 
     static Map<Class<? extends Annotation>, Handler> handlers(final ProcessingEnvironment processingEnvironment) {

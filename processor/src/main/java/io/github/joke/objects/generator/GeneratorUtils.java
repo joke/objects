@@ -1,5 +1,7 @@
 package io.github.joke.objects.generator;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.lang.model.element.ExecutableElement;
 import java.util.Collection;
 import java.util.Set;
@@ -12,6 +14,7 @@ import static org.apache.commons.lang3.RegExUtils.replacePattern;
 import static org.apache.commons.lang3.StringUtils.startsWithAny;
 import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
+@NotNull
 public final class GeneratorUtils {
 
     public static String determinePropertyName(final ExecutableElement element) {

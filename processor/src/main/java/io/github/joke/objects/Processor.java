@@ -2,6 +2,7 @@ package io.github.joke.objects.processor;
 
 import com.google.auto.service.AutoService;
 import io.github.joke.objects.handlers.Handler;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -17,6 +18,7 @@ import static java.util.stream.Collectors.toSet;
 import static io.github.joke.objects.AnnotationHandlerBuilderFactory.handlers;
 import static javax.lang.model.SourceVersion.latestSupported;
 
+@NotNull
 @SupportedOptions({"debug"})
 @AutoService(javax.annotation.processing.Processor.class)
 public class Processor extends AbstractProcessor {

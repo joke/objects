@@ -6,6 +6,7 @@ import dagger.Provides;
 import dagger.multibindings.ElementsIntoSet;
 import io.github.joke.objects.generator.GettersGenerator;
 import io.github.joke.objects.generator.SettersGenerator;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.inject.Inject;
@@ -13,6 +14,7 @@ import java.util.Set;
 
 import static io.github.joke.objects.handlers.DaggerBeanHandler_Factory.builder;
 
+@NotNull
 public class BeanHandler extends AbstractHandler {
 
     @Inject

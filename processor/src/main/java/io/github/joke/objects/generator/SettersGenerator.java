@@ -2,6 +2,7 @@ package io.github.joke.objects.generator;
 
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 import javax.lang.model.element.ExecutableElement;
@@ -17,6 +18,7 @@ import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PUBLIC;
 import static javax.lang.model.util.ElementFilter.methodsIn;
 
+@NotNull
 public class SettersGenerator {
 
     private final TypeElement element;

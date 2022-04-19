@@ -1,6 +1,7 @@
 package io.github.joke.objects.generator;
 
 import com.squareup.javapoet.MethodSpec;
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 import javax.lang.model.element.ExecutableElement;
@@ -13,6 +14,7 @@ import static io.github.joke.objects.generator.GeneratorUtils.determinePropertyN
 import static io.github.joke.objects.generator.GeneratorUtils.filterGetters;
 import static javax.lang.model.util.ElementFilter.methodsIn;
 
+@NotNull
 public class GettersGenerator {
 
     private final TypeElement element;

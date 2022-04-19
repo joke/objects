@@ -3,6 +3,7 @@ package io.github.joke.objects.generator;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeSpec;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.inject.Inject;
@@ -14,6 +15,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 import static org.apache.commons.lang3.ObjectUtils.compare;
 
 // Generate derived class
+@NotNull
 public class ClassGenerator {
 
     private final TypeElement element;

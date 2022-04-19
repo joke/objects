@@ -1,10 +1,12 @@
 package io.github.joke.objects.handlers;
 
 import com.squareup.javapoet.JavaFile;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.processing.Filer;
 import javax.inject.Inject;
 
+@NotNull
 public class FileWriter {
 
     private final Filer filer;

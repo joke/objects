@@ -1,10 +1,12 @@
 package io.github.joke.objects.handlers;
 
 import dagger.BindsInstance;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 
+@NotNull
 abstract class AbstractHandler implements Handler {
 
     private final ProcessingEnvironment processingEnvironment;

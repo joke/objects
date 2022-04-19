@@ -2,6 +2,7 @@ package io.github.joke.objects.generator;
 
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.TypeName;
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 import javax.lang.model.element.ExecutableElement;
@@ -15,6 +16,7 @@ import static io.github.joke.objects.generator.GeneratorUtils.filterGetters;
 import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.util.ElementFilter.methodsIn;
 
+@NotNull
 public class PropertiesGenerator {
 
     private final TypeElement element;

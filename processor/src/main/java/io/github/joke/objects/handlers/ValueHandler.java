@@ -5,6 +5,7 @@ import dagger.Component;
 import dagger.Provides;
 import dagger.multibindings.ElementsIntoSet;
 import io.github.joke.objects.generator.GettersGenerator;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.inject.Inject;
@@ -12,6 +13,7 @@ import java.util.Set;
 
 import static io.github.joke.objects.handlers.DaggerValueHandler_Factory.builder;
 
+@NotNull
 public class ValueHandler extends AbstractHandler {
 
     @Inject

@@ -8,12 +8,11 @@ dependencies {
     annotationProcessor 'com.google.auto.service:auto-service'
     annotationProcessor 'com.google.dagger:dagger'
     annotationProcessor 'com.google.dagger:dagger-compiler'
-    annotationProcessor 'javax.annotation:javax.annotation-api'
 
     compileOnly 'com.google.auto.service:auto-service-annotations'
-    compileOnly 'javax.annotation:javax.annotation-api'
 
     implementation project(':annotations')
+    implementation 'javax.annotation:javax.annotation-api'
     implementation 'com.google.dagger:dagger'
 
     implementation enforcedPlatform(project(':dependencies'))

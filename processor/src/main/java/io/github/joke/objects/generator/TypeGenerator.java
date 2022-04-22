@@ -29,6 +29,7 @@ public class TypeGenerator {
 
     public JavaFile getJavaFile() {
         final TypeSpec spec = type
+                .addOriginatingElement(typeElement)
                 .addFields(fields)
                 .addMethods(methods)
                 .build();

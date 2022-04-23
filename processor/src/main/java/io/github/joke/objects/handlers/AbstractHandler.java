@@ -43,5 +43,9 @@ abstract class AbstractHandler implements Handler {
         T build();
     }
 
+    public enum ProcessorTarget {
+        BEAN,
+        VALUE
+    }
 
 }

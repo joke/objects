@@ -35,7 +35,7 @@ public class Processor extends AbstractProcessor {
     public boolean process(final Set<? extends TypeElement> annotations, final RoundEnvironment roundEnv) {
         handlers.forEach((annotation, handler) -> roundEnv.getElementsAnnotatedWith(annotation)
                         .forEach(element -> handler.process((TypeElement) element)));
-        return false;
+        return true;
     }
 
     @Override

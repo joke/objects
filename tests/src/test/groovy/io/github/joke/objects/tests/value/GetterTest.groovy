@@ -30,7 +30,7 @@ class GetterTest extends Specification {
 
     def 'getter returns field'() {
         setup:
-        def person = new PersonImpl()
+        def person = new PersonImpl(null, null)
         def field = findFields(PersonImpl, {it.name == 'name'}, TOP_DOWN).first()
         ReflectionUtils.makeAccessible(field)
         field.set(person, "John Doe")

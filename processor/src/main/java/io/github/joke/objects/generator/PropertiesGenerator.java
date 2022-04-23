@@ -8,9 +8,8 @@ import javax.inject.Inject;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import java.util.List;
-import java.util.Set;
 
-import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.toList;
 import static io.github.joke.objects.generator.GeneratorUtils.determinePropertyName;
 import static io.github.joke.objects.generator.GeneratorUtils.filterGetters;
 import static javax.lang.model.element.Modifier.PRIVATE;
@@ -26,12 +25,11 @@ public class PropertiesGenerator {
         this.element = element;
     }
 
-    public Set<FieldSpec> getProperties() {
+    public List<FieldSpec> getProperties() {
         final List<ExecutableElement> methods = methodsIn(element.getEnclosedElements());
-
         return filterGetters(methods).stream()
                 .map(this::buildProperties)
-                .collect(toSet());
+                .collect(toList());
     }
 
     private FieldSpec buildProperties(final ExecutableElement element) {

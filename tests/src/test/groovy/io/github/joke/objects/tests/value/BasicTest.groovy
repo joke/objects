@@ -3,18 +3,12 @@ package io.github.joke.objects.tests.value
 import io.github.joke.objects.tests.value.PersonImpl
 import spock.lang.Specification
 
-import static org.junit.platform.commons.util.ReflectionUtils.findConstructors
 import static org.junit.platform.commons.util.ReflectionUtils.isAbstract
 import static org.junit.platform.commons.util.ReflectionUtils.isNotFinal
 import static org.junit.platform.commons.util.ReflectionUtils.isNotStatic
 import static org.junit.platform.commons.util.ReflectionUtils.isPublic
 
 class BasicTest extends Specification {
-
-    def 'implementation class is created'() {
-        expect:
-        new PersonImpl()
-    }
 
     def 'implementation is public'() {
         expect:
@@ -34,14 +28,6 @@ class BasicTest extends Specification {
     def 'implementation is not abstract'() {
         expect:
         !isAbstract(PersonImpl)
-    }
-
-    def 'implementation has default constructor'() {
-        setup:
-        def constructors = findConstructors(PersonImpl, {true})
-
-        expect:
-        constructors.size() == 1
     }
 
 }

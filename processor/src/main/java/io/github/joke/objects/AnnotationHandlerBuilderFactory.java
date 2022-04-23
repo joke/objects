@@ -5,7 +5,6 @@ import dagger.BindsInstance;
 import dagger.Component;
 import dagger.MapKey;
 import dagger.Module;
-import dagger.multibindings.ClassKey;
 import dagger.multibindings.IntoMap;
 import io.github.joke.objects.handlers.BeanHandler;
 import io.github.joke.objects.handlers.Handler;
@@ -35,7 +34,7 @@ public interface AnnotationHandlerBuilderFactory {
 
         @Binds
         @IntoMap
-        @ClassKey(Value.class)
+        @AnnotationKey(Value.class)
         Handler valueHandler(ValueHandler valueHandler);
 
     }

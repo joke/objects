@@ -12,6 +12,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.inject.Inject;
 import java.util.Set;
 
+import static io.github.joke.objects.handlers.AbstractHandler.ProcessorTarget.BEAN;
 import static io.github.joke.objects.handlers.DaggerBeanHandler_Factory.builder;
 
 @NotNull
@@ -25,6 +26,11 @@ public class BeanHandler extends AbstractHandler {
     @dagger.Module
     public interface Module extends CommonModule {
         // all the generators
+
+        @Provides
+        static ProcessorTarget provideProcessorTarget() {
+            return BEAN;
+        }
 
         @Provides
         @ElementsIntoSet

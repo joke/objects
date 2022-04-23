@@ -1,7 +1,6 @@
 package io.github.joke.objects.tests.value
 
-
-import io.github.joke.objects.tests.bean.PersonImpl
+import io.github.joke.objects.tests.value.PersonImpl
 import spock.lang.Specification
 
 import static org.junit.platform.commons.util.ReflectionUtils.HierarchyTraversalMode.TOP_DOWN

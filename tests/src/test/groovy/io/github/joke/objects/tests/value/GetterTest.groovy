@@ -1,7 +1,6 @@
 package io.github.joke.objects.tests.value
 
-
-import io.github.joke.objects.tests.bean.PersonImpl
+import io.github.joke.objects.tests.value.PersonImpl
 import org.junit.platform.commons.util.ReflectionUtils
 import spock.lang.Specification
 

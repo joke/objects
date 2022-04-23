@@ -33,7 +33,7 @@ class SetterTest extends Specification {
 
     def 'setter sets field with interface return type'() {
         setup:
-        def person = new PersonImpl()
+        def person = new PersonImpl(null, null)
         person.parents = [person]
 
         expect:
@@ -63,7 +63,7 @@ class SetterTest extends Specification {
 
     def 'setter sets field'() {
         setup:
-        def person = new PersonImpl()
+        def person = new PersonImpl(null, null)
         person.name = 'John Doe'
 
         expect:

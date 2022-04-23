@@ -4,7 +4,8 @@ import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 
 import javax.inject.Inject;
-import javax.lang.model.element.TypeElement;
+import javax.inject.Named;
+import java.util.List;
 import java.util.Set;
 
 import static java.util.Collections.singleton;
@@ -13,13 +14,11 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 
 public class ConstructorGenerator {
 
-    private final TypeElement element;
-    private final Set<FieldSpec> fields;
+    private final List<FieldSpec> properties;
 
     @Inject
-    public ConstructorGenerator(final TypeElement element, final Set<FieldSpec> fields) {
-        this.element = element;
-        this.fields = fields;
+    public ConstructorGenerator(@Named("properties") final List<FieldSpec> properties) {
+        this.properties = properties;
     }
 
     public Set<MethodSpec> getConstructors() {
@@ -30,7 +29,7 @@ public class ConstructorGenerator {
     private MethodSpec buildAllArgsConstructor() {
         final MethodSpec.Builder builder = MethodSpec.constructorBuilder()
                 .addModifiers(PUBLIC);
-        fields.forEach(field -> {
+        properties.forEach(field -> {
             builder.addParameter(field.type, field.name, FINAL);
             builder.addStatement("this.$N = $N", field.name, field.name);
         });

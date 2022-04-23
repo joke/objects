@@ -21,6 +21,7 @@ dependencies {
     implementation 'com.squareup:javapoet'
     implementation 'org.apache.commons:commons-lang3'
 
+    testImplementation 'org.slf4j:slf4j-simple'
     testImplementation 'io.github.joke:spock-deepmock'
     testImplementation 'org.spockframework:spock-core'
 

@@ -1,6 +1,5 @@
-package io.github.joke.objects.tests
+package io.github.joke.objects.tests.bean
 
-import io.github.joke.objects.tests.basic.PersonImpl
 import spock.lang.Specification
 
 import static org.junit.platform.commons.util.ReflectionUtils.HierarchyTraversalMode.TOP_DOWN
@@ -9,7 +8,7 @@ import static org.junit.platform.commons.util.ReflectionUtils.isNotFinal
 import static org.junit.platform.commons.util.ReflectionUtils.isNotStatic
 import static org.junit.platform.commons.util.ReflectionUtils.isPrivate
 
-class BeanFieldTest extends Specification {
+class FieldTest extends Specification {
 
     def 'field attributes'() {
         setup:

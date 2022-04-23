@@ -1,4 +1,4 @@
-package io.github.joke.objects.tests.basic;
+package io.github.joke.objects.tests.bean;
 
 import io.github.joke.objects.Bean;
 

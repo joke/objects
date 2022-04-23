@@ -1,6 +1,5 @@
-package io.github.joke.objects.tests
+package io.github.joke.objects.tests.bean
 
-import io.github.joke.objects.tests.basic.PersonImpl
 import spock.lang.Specification
 
 import static org.junit.platform.commons.util.ReflectionUtils.findConstructors
@@ -9,7 +8,7 @@ import static org.junit.platform.commons.util.ReflectionUtils.isNotFinal
 import static org.junit.platform.commons.util.ReflectionUtils.isNotStatic
 import static org.junit.platform.commons.util.ReflectionUtils.isPublic
 
-class BasicBeanTest extends Specification {
+class BasicTest extends Specification {
 
     def 'implementation class is created'() {
         expect:

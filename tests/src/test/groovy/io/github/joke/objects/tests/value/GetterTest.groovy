@@ -28,25 +28,6 @@ class GetterTest extends Specification {
         }
     }
 
-    def 'has setter with interface return type'() {
-        setup:
-        def methods = findMethods(PersonImpl, {it.name == 'setName'})
-
-        expect:
-        methods.size() == 1
-        verifyAll(methods[0]) {method ->
-            isPublic method
-            isNotFinal method
-            isNotStatic method
-            method.returnType == void.class
-            verifyAll(method.parameters) {
-                size() == 1
-                first().name == 'name'
-                first().type == String
-            }
-        }
-    }
-
     def 'getter returns field'() {
         setup:
         def person = new PersonImpl()

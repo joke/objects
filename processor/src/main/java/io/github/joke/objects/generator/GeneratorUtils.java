@@ -10,7 +10,7 @@ import static java.util.stream.Collectors.toList;
 import static javax.lang.model.element.Modifier.STATIC;
 import static javax.lang.model.type.TypeKind.VOID;
 import static org.apache.commons.lang3.RegExUtils.removeFirst;
-import static org.apache.commons.lang3.RegExUtils.replacePattern;
+import static org.apache.commons.lang3.StringUtils.capitalize;
 import static org.apache.commons.lang3.StringUtils.startsWithAny;
 import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
@@ -22,8 +22,11 @@ public final class GeneratorUtils {
         return uncapitalize(strippedName);
     }
 
-    public static String determineSetterName(final ExecutableElement element) {
-        return replacePattern(element.getSimpleName().toString(), "^(get|is)", "set");
+    public static String determineSetterName(final String propertyName) {
+        return "set" + capitalize(propertyName);
+    }
+    public static String determineGetterName(final String propertyName) {
+        return "get" + capitalize(propertyName);
     }
 
     public static List<ExecutableElement> filterGetters(final Collection<ExecutableElement> elements) {

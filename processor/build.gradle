@@ -30,4 +30,5 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    jvmArgs += ['--add-opens=java.compiler/javax.annotation.processing=ALL-UNNAMED']
 }

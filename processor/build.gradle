@@ -33,3 +33,7 @@ test {
     useJUnitPlatform()
     jvmArgs += ['--add-opens=java.compiler/javax.annotation.processing=ALL-UNNAMED']
 }
+
+pitest {
+    jvmArgs = ['--add-opens=java.compiler/javax.annotation.processing=ALL-UNNAMED']
+}

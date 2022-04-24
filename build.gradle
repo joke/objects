@@ -17,6 +17,11 @@ allprojects { project ->
         }
     }
 
+    pluginManager.withPlugin('jacoco') {
+        test.finalizedBy jacocoTestReport
+        jacocoTestReport.dependsOn test
+    }
+
 }
 
 wrapper {

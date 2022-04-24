@@ -30,6 +30,7 @@ class ProcessorTest extends Specification {
         def handlers = readField(processor, 'handlers', true) as Map
 
         expect:
+        readField(processor, 'processingEnv', true) == processingEnvironment
         verifyAll(handlers) {
             size() == 2
             it[Bean] in BeanHandler

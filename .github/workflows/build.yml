@@ -19,3 +19,7 @@ jobs:
         distribution: zulu
     - name: build
       run: ./gradlew check
+    - uses: codecov/codecov-action@v2
+      with:
+        files: build/reports/jacoco/test/jacocoTestReport.xml
+        flags: unittests

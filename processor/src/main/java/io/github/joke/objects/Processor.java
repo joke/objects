@@ -17,6 +17,7 @@ import java.util.Set;
 import static java.util.stream.Collectors.toSet;
 import static io.github.joke.objects.AnnotationHandlerBuilderFactory.handlers;
 import static javax.lang.model.SourceVersion.latestSupported;
+import static javax.lang.model.util.ElementFilter.typesIn;
 
 @NotNull
 @SupportedOptions({"debug"})
@@ -33,10 +34,7 @@ public class Processor extends AbstractProcessor {
 
     @Override
     public boolean process(final Set<? extends TypeElement> annotations, final RoundEnvironment roundEnv) {
-        handlers.forEach((annotation, handler) -> roundEnv.getElementsAnnotatedWith(annotation)
-                .stream()
-                .filter(TypeElement.class::isInstance)
-                .map(TypeElement.class::cast)
+        handlers.forEach((annotation, handler) -> typesIn(roundEnv.getElementsAnnotatedWith(annotation))
                 .forEach(handler::process));
         return true;
     }

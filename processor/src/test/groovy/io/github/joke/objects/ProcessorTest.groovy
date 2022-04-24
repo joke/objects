@@ -12,6 +12,8 @@ import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.TypeElement
 
 import static javax.lang.model.SourceVersion.latestSupported
+import static javax.lang.model.element.ElementKind.CLASS
+import static javax.lang.model.element.ElementKind.FIELD
 import static org.apache.commons.lang3.reflect.FieldUtils.readField
 import static org.apache.commons.lang3.reflect.FieldUtils.writeDeclaredField
 
@@ -25,10 +27,10 @@ class ProcessorTest extends Specification {
     def 'init prepares handler'() {
         setup:
         processor.init(processingEnvironment)
+        def handlers = readField(processor, 'handlers', true) as Map
 
         expect:
-        readField(processor, 'initialized', true)
-        verifyAll(readField(processor, 'handlers', true) as Map) {
+        verifyAll(handlers) {
             size() == 2
             it[Bean] in BeanHandler
             it[Value] in ValueHandler
@@ -65,15 +67,16 @@ class ProcessorTest extends Specification {
         TypeElement value = DeepMock()
         RoundEnvironment roundEnvironment = DeepMock()
 
-        TypeElement classAnnotated = Stub()
-        TypeElement valueAnnotated1 = Stub()
-        TypeElement valueAnnotated2 = Stub()
+        TypeElement classAnnotated = Stub { kind >> CLASS }
+        TypeElement valueAnnotated1 = Stub { kind >> CLASS }
+        TypeElement valueAnnotated2 = Stub { kind >> CLASS }
+        TypeElement wrongClass = Stub { kind >> FIELD }
 
         when:
         def res = processor.process([bean, value] as Set, roundEnvironment)
 
         then:
-        1 * roundEnvironment.getElementsAnnotatedWith(Bean) >> { [classAnnotated] as Set }
+        1 * roundEnvironment.getElementsAnnotatedWith(Bean) >> { [classAnnotated, wrongClass] as Set }
         1 * roundEnvironment.getElementsAnnotatedWith(Value) >> { [valueAnnotated1, valueAnnotated2] as Set }
         1 * beanHandler.process(classAnnotated) >> {}
         1 * valueHandler.process(valueAnnotated1) >> {}

@@ -1,5 +1,6 @@
 plugins {
     id 'com.github.arcticlampyrid.gradle-git-version' version '1.0.4'
+    id 'info.solidsoft.pitest' version '1.7.4' apply false
 }
 
 allprojects { project ->
@@ -24,6 +25,19 @@ allprojects { project ->
             reports {
                 xml.required = true
             }
+        }
+    }
+
+    pluginManager.withPlugin('info.solidsoft.pitest') {
+        pitest {
+            outputFormats = ['XML', 'HTML']
+            exportLineCoverage = true
+            timestampedReports = false
+            pitestVersion = '1.7.5'
+            junit5PluginVersion = '0.15'
+            mutators = ['ALL']
+            historyInputLocation = "$buildDir/reports/pitest/history"
+            historyOutputLocation = "$buildDir/reports/pitest/history"
         }
     }
 

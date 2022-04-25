@@ -5,31 +5,30 @@ import dagger.Component;
 import dagger.Provides;
 import dagger.multibindings.ElementsIntoSet;
 import io.github.joke.objects.generator.GettersGenerator;
-import io.github.joke.objects.generator.SettersGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.inject.Inject;
 import java.util.Set;
 
-import static io.github.joke.objects.handlers.AbstractHandler.ProcessorTarget.BEAN;
-import static io.github.joke.objects.handlers.DaggerBeanHandler_Factory.builder;
+import static io.github.joke.objects.handlers.AbstractHandler.ProcessorTarget.IMMUTABLE;
+import static io.github.joke.objects.handlers.DaggerImmutableHandler_Factory.builder;
 
 @NotNull
-public class BeanHandler extends AbstractHandler {
+public class ImmutableHandler extends AbstractHandler {
 
     @Inject
-    public BeanHandler(final ProcessingEnvironment processingEnvironment) {
+    public ImmutableHandler(final ProcessingEnvironment processingEnvironment) {
         super(builder(), processingEnvironment);
     }
 
     @dagger.Module
-    public interface Module extends CommonModule {
+    public interface Module {
         // all the generators
 
         @Provides
         static ProcessorTarget provideProcessorTarget() {
-            return BEAN;
+            return IMMUTABLE;
         }
 
         @Provides
@@ -38,11 +37,6 @@ public class BeanHandler extends AbstractHandler {
             return gettersGenerator.getGetters();
         }
 
-        @Provides
-        @ElementsIntoSet
-        static Set<MethodSpec> provideSetters(final SettersGenerator settersGenerator) {
-            return settersGenerator.getSetters();
-        }
     }
 
     @Component(modules = {Module.class, CommonModule.class})

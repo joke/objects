@@ -1,4 +1,4 @@
-package io.github.joke.objects.tests.bean
+package io.github.joke.objects.tests.immutable
 
 import spock.lang.Specification
 

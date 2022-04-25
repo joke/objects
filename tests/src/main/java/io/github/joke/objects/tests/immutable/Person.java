@@ -1,10 +1,10 @@
-package io.github.joke.objects.tests.bean;
+package io.github.joke.objects.tests.immutable;
 
-import io.github.joke.objects.Bean;
+import io.github.joke.objects.Immutable;
 
 import java.util.List;
 
-@Bean
+@Immutable
 public interface Person {
 
     String getName();

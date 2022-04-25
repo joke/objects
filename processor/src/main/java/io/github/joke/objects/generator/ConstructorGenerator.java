@@ -2,6 +2,7 @@ package io.github.joke.objects.generator;
 
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -12,6 +13,7 @@ import static java.util.Collections.singleton;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PUBLIC;
 
+@NotNull
 public class ConstructorGenerator {
 
     private final List<FieldSpec> properties;

@@ -44,8 +44,8 @@ abstract class AbstractHandler implements Handler {
     }
 
     public enum ProcessorTarget {
-        BEAN,
-        VALUE
+        MUTABLE,
+        IMMUTABLE
     }
 
 }

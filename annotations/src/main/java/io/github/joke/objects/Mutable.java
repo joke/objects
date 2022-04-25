@@ -10,5 +10,5 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
 @Documented
 @Target(TYPE)
 @Retention(SOURCE)
-public @interface Bean {
+public @interface Mutable {
 }

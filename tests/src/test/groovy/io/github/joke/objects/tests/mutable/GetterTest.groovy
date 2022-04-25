@@ -1,4 +1,4 @@
-package io.github.joke.objects.tests.bean
+package io.github.joke.objects.tests.mutable
 
 import org.junit.platform.commons.util.ReflectionUtils
 import spock.lang.Specification

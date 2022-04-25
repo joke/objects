@@ -1,8 +1,8 @@
 package io.github.joke.objects
 
-import io.github.joke.objects.handlers.BeanHandler
+import io.github.joke.objects.handlers.MutableHandler
 import io.github.joke.objects.handlers.Handler
-import io.github.joke.objects.handlers.ValueHandler
+import io.github.joke.objects.handlers.ImmutableHandler
 import io.github.joke.objects.processor.Processor
 import spock.lang.Specification
 import spock.lang.Subject
@@ -33,8 +33,8 @@ class ProcessorTest extends Specification {
         readField(processor, 'processingEnv', true) == processingEnvironment
         verifyAll(handlers) {
             size() == 2
-            it[Bean] in BeanHandler
-            it[Value] in ValueHandler
+            it[Mutable] in MutableHandler
+            it[Immutable] in ImmutableHandler
         }
     }
 
@@ -46,7 +46,7 @@ class ProcessorTest extends Specification {
         annotation.canonicalName in processor.supportedAnnotationTypes
 
         where:
-        annotation << [Value, Bean]
+        annotation << [Immutable, Mutable]
     }
 
     def 'supported version'() {
@@ -59,13 +59,13 @@ class ProcessorTest extends Specification {
 
     def 'start process'() {
         setup:
-        Handler beanHandler = DeepMock()
-        Handler valueHandler = DeepMock()
-        def handlers = [(Bean): beanHandler, (Value): valueHandler]
+        Handler mutableHandler = DeepMock()
+        Handler immutableHandler = DeepMock()
+        def handlers = [(Mutable): mutableHandler, (Immutable): immutableHandler]
         writeDeclaredField(processor, 'handlers', handlers, true)
 
-        TypeElement bean = DeepMock()
-        TypeElement value = DeepMock()
+        TypeElement mutable = DeepMock()
+        TypeElement immutable = DeepMock()
         RoundEnvironment roundEnvironment = DeepMock()
 
         TypeElement classAnnotated = Stub { kind >> CLASS }
@@ -74,14 +74,14 @@ class ProcessorTest extends Specification {
         TypeElement wrongClass = Stub { kind >> FIELD }
 
         when:
-        def res = processor.process([bean, value] as Set, roundEnvironment)
+        def res = processor.process([mutable, immutable] as Set, roundEnvironment)
 
         then:
-        1 * roundEnvironment.getElementsAnnotatedWith(Bean) >> { [classAnnotated, wrongClass] as Set }
-        1 * roundEnvironment.getElementsAnnotatedWith(Value) >> { [valueAnnotated1, valueAnnotated2] as Set }
-        1 * beanHandler.process(classAnnotated) >> {}
-        1 * valueHandler.process(valueAnnotated1) >> {}
-        1 * valueHandler.process(valueAnnotated2) >> {}
+        1 * roundEnvironment.getElementsAnnotatedWith(Mutable) >> { [classAnnotated, wrongClass] as Set }
+        1 * roundEnvironment.getElementsAnnotatedWith(Immutable) >> { [valueAnnotated1, valueAnnotated2] as Set }
+        1 * mutableHandler.process(classAnnotated) >> {}
+        1 * immutableHandler.process(valueAnnotated1) >> {}
+        1 * immutableHandler.process(valueAnnotated2) >> {}
         0 * _
 
         expect:

@@ -6,9 +6,9 @@ import dagger.Component;
 import dagger.MapKey;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
-import io.github.joke.objects.handlers.BeanHandler;
+import io.github.joke.objects.handlers.ImmutableHandler;
+import io.github.joke.objects.handlers.MutableHandler;
 import io.github.joke.objects.handlers.Handler;
-import io.github.joke.objects.handlers.ValueHandler;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -29,13 +29,13 @@ public interface AnnotationHandlerBuilderFactory {
     interface HandlerModule {
         @Binds
         @IntoMap
-        @AnnotationKey(Bean.class)
-        Handler beanHandler(BeanHandler beanHandler);
+        @AnnotationKey(Mutable.class)
+        Handler mutableHandler(MutableHandler mutableHandler);
 
         @Binds
         @IntoMap
-        @AnnotationKey(Value.class)
-        Handler valueHandler(ValueHandler valueHandler);
+        @AnnotationKey(Immutable.class)
+        Handler immutableHandler(ImmutableHandler immutableHandler);
 
     }
 

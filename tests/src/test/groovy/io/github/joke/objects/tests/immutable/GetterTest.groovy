@@ -1,6 +1,5 @@
-package io.github.joke.objects.tests.value
+package io.github.joke.objects.tests.immutable
 
-import io.github.joke.objects.tests.value.PersonImpl
 import org.junit.platform.commons.util.ReflectionUtils
 import spock.lang.Specification
 

@@ -1,4 +1,5 @@
-package io.github.joke.objects.tests.value
+package io.github.joke.objects.tests.mutable
+
 
 import spock.lang.Specification
 
@@ -39,7 +40,7 @@ class ConstructorTest extends Specification {
             verifyAll(parameters[1]) {
                 name == 'parents'
                 isFinal modifiers
-                parameterizedType.typeName == 'java.util.List<io.github.joke.objects.tests.value.Person>'
+                parameterizedType.typeName == 'java.util.List<io.github.joke.objects.tests.mutable.Person>'
             }
         }
     }

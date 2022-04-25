@@ -1,10 +1,10 @@
-package io.github.joke.objects.tests.value;
+package io.github.joke.objects.tests.mutable;
 
-import io.github.joke.objects.Value;
+import io.github.joke.objects.Mutable;
 
 import java.util.List;
 
-@Value
+@Mutable
 public interface Person {
 
     String getName();

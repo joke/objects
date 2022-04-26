@@ -11,6 +11,8 @@ import javax.inject.Inject;
 import javax.lang.model.element.TypeElement;
 import java.util.Set;
 
+import static java.util.Collections.singleton;
+
 @NotNull
 public class TypeGenerator {
 
@@ -27,15 +29,15 @@ public class TypeGenerator {
         this.typeElement = typeElement;
     }
 
-    public JavaFile getJavaFile() {
+    public Set<JavaFile> getJavaFile() {
         final TypeSpec spec = type
                 .addOriginatingElement(typeElement)
                 .addFields(fields)
                 .addMethods(methods)
                 .build();
-
-        return JavaFile.builder(ClassName.get(typeElement).packageName(), spec)
+        final JavaFile javaFile = JavaFile.builder(ClassName.get(typeElement).packageName(), spec)
                 .build();
+        return singleton(javaFile);
     }
 
 }

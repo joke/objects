@@ -26,6 +26,7 @@ dependencies {
     testImplementation 'org.slf4j:slf4j-simple'
     testImplementation 'io.github.joke:spock-deepmock'
     testImplementation 'org.spockframework:spock-core'
+    testImplementation 'io.github.joke:spock-mockable'
 
 }
 

@@ -38,7 +38,8 @@ public interface CommonModule {
     }
 
     @Provides
-    static JavaFile provideJavaFile(final TypeGenerator typeGenerator) {
+    @ElementsIntoSet
+    static Set<JavaFile> provideJavaFile(final TypeGenerator typeGenerator) {
         return typeGenerator.getJavaFile();
     }
 

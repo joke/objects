@@ -47,6 +47,12 @@ branches:
         app_id: 9517
       - context: DCO
         app_id: 1861
+      - context: CodeQL
+        app_id: 57789
+      - context: codecov/patch
+        app_id: 254
+      - context: codecov/project
+        app_id: 254
     enforce_admins: false
     required_linear_history: true
     required_conversation_resolution: true

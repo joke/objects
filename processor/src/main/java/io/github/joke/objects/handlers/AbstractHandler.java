@@ -10,9 +10,9 @@ import javax.lang.model.element.TypeElement;
 abstract class AbstractHandler implements Handler {
 
     private final ProcessingEnvironment processingEnvironment;
-    private final Builder<?> factoryBuilder;
+    private final Builder<? extends Factory> factoryBuilder;
 
-    AbstractHandler(final Builder<?> builder, final ProcessingEnvironment processingEnvironment) {
+    AbstractHandler(final Builder<? extends Factory> builder, final ProcessingEnvironment processingEnvironment) {
         this.factoryBuilder = builder;
         this.processingEnvironment = processingEnvironment;
     }

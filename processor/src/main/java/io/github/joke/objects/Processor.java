@@ -1,4 +1,4 @@
-package io.github.joke.objects.processor;
+package io.github.joke.objects;
 
 import com.google.auto.service.AutoService;
 import io.github.joke.objects.handlers.Handler;
@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
@@ -14,13 +15,13 @@ import java.lang.annotation.Annotation;
 import java.util.Map;
 import java.util.Set;
 
-import static java.util.stream.Collectors.toSet;
 import static io.github.joke.objects.AnnotationHandlerBuilderFactory.handlers;
 import static javax.lang.model.SourceVersion.latestSupported;
 import static javax.lang.model.util.ElementFilter.typesIn;
 
 @NotNull
 @SupportedOptions({"debug"})
+@SupportedAnnotationTypes("io.github.joke.objects.*")
 @AutoService(javax.annotation.processing.Processor.class)
 public class Processor extends AbstractProcessor {
 
@@ -37,13 +38,6 @@ public class Processor extends AbstractProcessor {
         handlers.forEach((annotation, handler) -> typesIn(roundEnv.getElementsAnnotatedWith(annotation))
                 .forEach(handler::process));
         return false;
-    }
-
-    @Override
-    public Set<String> getSupportedAnnotationTypes() {
-        return handlers.keySet().stream()
-                .map(Class::getCanonicalName)
-                .collect(toSet());
     }
 
     @Override

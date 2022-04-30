@@ -17,6 +17,7 @@ abstract class AbstractHandler implements Handler {
         this.processingEnvironment = processingEnvironment;
     }
 
+    @Override
     public final void process(final TypeElement typeElement) {
         factoryBuilder
                 .processingEnvironment(processingEnvironment)

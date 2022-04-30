@@ -85,6 +85,6 @@ class ProcessorTest extends Specification {
         0 * _
 
         expect:
-        res
+        !res
     }
 }

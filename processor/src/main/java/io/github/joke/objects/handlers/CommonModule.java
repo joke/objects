@@ -10,14 +10,14 @@ import dagger.multibindings.ElementsIntoSet;
 import io.github.joke.objects.generator.ClassGenerator;
 import io.github.joke.objects.generator.ConstructorGenerator;
 import io.github.joke.objects.generator.PropertiesGenerator;
+import io.github.joke.objects.scanner.Property;
+import io.github.joke.objects.scanner.PropertyScanner;
 import io.github.joke.objects.generator.TypeGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.inject.Named;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,15 +26,14 @@ import java.util.Set;
 public interface CommonModule {
 
     @Provides
-    @Named("properties")
-    static List<FieldSpec> provideGeneratedFields(final PropertiesGenerator propertiesGenerator) {
-        return propertiesGenerator.getProperties();
+    static List<Property> provideProperties(final PropertyScanner propertyScanner) {
+        return propertyScanner.getProperties();
     }
 
     @Provides
     @ElementsIntoSet
-    static Set<FieldSpec> provideFields(@Named("properties") final List<FieldSpec> fieldSpecs) {
-        return new HashSet<>(fieldSpecs);
+    static Set<FieldSpec> provideFields(final PropertiesGenerator propertiesGenerator) {
+        return propertiesGenerator.getProperties();
     }
 
     @Provides

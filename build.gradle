@@ -15,7 +15,7 @@ allprojects { project ->
     pluginManager.withPlugin('base') {
         tasks.withType(JavaCompile) {
             options.release = 8
-            options.compilerArgs << '-parameters'
+            options.compilerArgs << '-parameters' << '-Werror'
         }
     }
 
@@ -34,9 +34,9 @@ allprojects { project ->
             outputFormats = ['XML', 'HTML']
             exportLineCoverage = true
             timestampedReports = false
-            pitestVersion = '1.7.5'
+            pitestVersion = '1.7.6'
             junit5PluginVersion = '0.15'
-            mutators = ['ALL']
+            mutators = ['ALL', '-RETURN_VALS']
             historyInputLocation = "$buildDir/reports/pitest/history"
             historyOutputLocation = "$buildDir/reports/pitest/history"
         }

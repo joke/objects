@@ -43,28 +43,4 @@ class ClassGeneratorTest extends Specification {
         RELEASE_10  || 'javax.annotation.processing.Generated'
     }
 
-    def 'generated annotation for is java version dependent'() {
-        when:
-        def res = classGenerator.generatedAnnotation
-
-        then:
-        1 * processingEnvironment.sourceVersion >> javaVersion
-        1 * classGenerator._
-        0 * _
-
-        expect:
-        verifyAll(res) {
-            "$type" == expectedType
-            members.size() == 1
-            "${members.value[0]}" == '"io.github.joke.objects.generator.PropertiesGenerator"'
-        }
-
-        where:
-        javaVersion || expectedType
-        RELEASE_7   || 'javax.annotation.Generated'
-        RELEASE_8   || 'javax.annotation.Generated'
-        RELEASE_9   || 'javax.annotation.processing.Generated'
-        RELEASE_10  || 'javax.annotation.processing.Generated'
-    }
-
 }

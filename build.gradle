@@ -1,6 +1,7 @@
 plugins {
     id 'com.github.arcticlampyrid.gradle-git-version' version '1.0.4'
     id 'info.solidsoft.pitest' version '1.7.4' apply false
+    id 'net.ltgt.errorprone' version '2.0.2' apply false
 }
 
 allprojects { project ->
@@ -38,6 +39,16 @@ allprojects { project ->
             mutators = ['ALL']
             historyInputLocation = "$buildDir/reports/pitest/history"
             historyOutputLocation = "$buildDir/reports/pitest/history"
+        }
+    }
+
+    pluginManager.withPlugin('net.ltgt.errorprone') {
+        tasks.withType(JavaCompile) {
+            options.errorprone {
+                disableWarningsInGeneratedCode = true
+                error('NullAway')
+                option('NullAway:AnnotatedPackages', project.group)
+            }
         }
     }
 

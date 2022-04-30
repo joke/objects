@@ -12,14 +12,14 @@ import javax.inject.Inject;
 import java.util.Set;
 
 import static io.github.joke.objects.handlers.AbstractHandler.ProcessorTarget.IMMUTABLE;
-import static io.github.joke.objects.handlers.DaggerImmutableHandler_Factory.builder;
+
 
 @NotNull
 public class ImmutableHandler extends AbstractHandler {
 
     @Inject
     public ImmutableHandler(final ProcessingEnvironment processingEnvironment) {
-        super(builder(), processingEnvironment);
+        super(DaggerImmutableHandler_Factory.builder(), processingEnvironment);
     }
 
     @dagger.Module

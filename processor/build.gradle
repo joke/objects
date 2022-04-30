@@ -3,9 +3,14 @@ plugins {
     id 'info.solidsoft.pitest'
     id 'jacoco'
     id 'java'
+    id 'net.ltgt.errorprone'
 }
 
 dependencies {
+
+    errorprone enforcedPlatform(project(':dependencies'))
+    errorprone 'com.google.errorprone:error_prone_core'
+    errorprone 'com.uber.nullaway:nullaway'
 
     annotationProcessor enforcedPlatform(project(':dependencies'))
     annotationProcessor 'com.google.auto.service:auto-service'
@@ -28,6 +33,14 @@ dependencies {
     testImplementation 'org.spockframework:spock-core'
     testImplementation 'io.github.joke:spock-mockable'
 
+}
+
+tasks.withType(JavaCompile) {
+    options.errorprone {
+        excludedPaths = '.*/Dagger.*'
+        error('NullAway')
+        option('NullAway:AnnotatedPackages', project.group)
+    }
 }
 
 test {

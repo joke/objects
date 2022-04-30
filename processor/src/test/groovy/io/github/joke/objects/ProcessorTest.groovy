@@ -1,9 +1,9 @@
 package io.github.joke.objects
 
-import io.github.joke.objects.handlers.MutableHandler
+import io.github.joke.objects.Processor
 import io.github.joke.objects.handlers.Handler
 import io.github.joke.objects.handlers.ImmutableHandler
-import io.github.joke.objects.processor.Processor
+import io.github.joke.objects.handlers.MutableHandler
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -11,6 +11,7 @@ import javax.annotation.processing.ProcessingEnvironment
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.TypeElement
 
+import static javax.lang.model.SourceVersion.RELEASE_8
 import static javax.lang.model.SourceVersion.latestSupported
 import static javax.lang.model.element.ElementKind.CLASS
 import static javax.lang.model.element.ElementKind.FIELD
@@ -42,11 +43,14 @@ class ProcessorTest extends Specification {
         setup:
         processor.init(processingEnvironment)
 
-        expect:
-        annotation.canonicalName in processor.supportedAnnotationTypes
+        when:
+        def res = processor.supportedAnnotationTypes
 
-        where:
-        annotation << [Immutable, Mutable]
+        then:
+        1 * processingEnvironment.sourceVersion >> RELEASE_8
+
+        expect:
+        res ==~ ['io.github.joke.objects.*']
     }
 
     def 'supported version'() {

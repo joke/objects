@@ -6,6 +6,8 @@ import com.squareup.javapoet.TypeSpec.Builder
 import io.github.joke.objects.generator.ClassGenerator
 import io.github.joke.objects.generator.ConstructorGenerator
 import io.github.joke.objects.generator.PropertiesGenerator
+import io.github.joke.objects.scanner.Property
+import io.github.joke.objects.scanner.PropertyScanner
 import io.github.joke.objects.generator.TypeGenerator
 import io.github.joke.spockmockable.Mockable
 import spock.lang.Specification
@@ -18,39 +20,46 @@ import javax.annotation.processing.ProcessingEnvironment
 import static io.github.joke.objects.handlers.CommonModule.provideConstructors
 import static io.github.joke.objects.handlers.CommonModule.provideFields
 import static io.github.joke.objects.handlers.CommonModule.provideFiler
-import static io.github.joke.objects.handlers.CommonModule.provideGeneratedFields
 import static io.github.joke.objects.handlers.CommonModule.provideJavaFile
 import static io.github.joke.objects.handlers.CommonModule.provideMessager
+import static io.github.joke.objects.handlers.CommonModule.provideProperties
 import static io.github.joke.objects.handlers.CommonModule.provideTypeSpecBuilder
 
 @Subject(CommonModule)
 @Mockable([FieldSpec, MethodSpec, Builder])
 class CommonModuleTest extends Specification {
 
-    def 'provide generated fields'() {
+    def 'provide provide properties'() {
         setup:
-        PropertiesGenerator propertiesGenerator = DeepMock()
-        FieldSpec fieldSpec = DeepMock()
+        Property property = DeepMock()
+        PropertyScanner propertyScanner = DeepMock()
 
         when:
-        def res = provideGeneratedFields(propertiesGenerator)
+        def res = provideProperties(propertyScanner)
 
         then:
-        propertiesGenerator.properties >> [fieldSpec]
+        1 * propertyScanner.properties >> [property]
+        0 * _
 
         expect:
-        res == [fieldSpec]
+        res == [property]
     }
 
     def 'provide fields'() {
         setup:
-        FieldSpec fieldSpec = DeepMock()
+        Property property = DeepMock()
+        PropertiesGenerator propertiesGenerator = DeepMock()
 
-        def res = provideFields([fieldSpec])
+        when:
+        def res = provideFields(propertiesGenerator)
+
+        then:
+        1 * propertiesGenerator.properties >> { [property] as Set }
+        0 * _
 
         expect:
         res in HashSet
-        res ==~ [fieldSpec]
+        res ==~ [property]
     }
 
     def 'provide java file'() {
@@ -62,7 +71,8 @@ class CommonModuleTest extends Specification {
         def res = provideJavaFile(typeGenerator)
 
         then:
-        typeGenerator.javaFile >> { [fieldSpec] as Set }
+        1 * typeGenerator.javaFile >> { [fieldSpec] as Set }
+        0 * _
 
         expect:
         res in Set
@@ -78,7 +88,8 @@ class CommonModuleTest extends Specification {
         def res = provideFiler(processingEnvironment)
 
         then:
-        processingEnvironment.filer >> filer
+        1 * processingEnvironment.filer >> filer
+        0 * _
 
         expect:
         res == filer
@@ -93,7 +104,8 @@ class CommonModuleTest extends Specification {
         def res = provideMessager(processingEnvironment)
 
         then:
-        processingEnvironment.messager >> messager
+        1 * processingEnvironment.messager >> messager
+        0 * _
 
         expect:
         res == messager
@@ -108,7 +120,8 @@ class CommonModuleTest extends Specification {
         def res = provideTypeSpecBuilder(classGenerator)
 
         then:
-        classGenerator.typeBuilder >> builder
+        1 * classGenerator.typeBuilder >> builder
+        0 * _
 
         expect:
         res == builder
@@ -123,7 +136,8 @@ class CommonModuleTest extends Specification {
         def res = provideConstructors(constructorGenerator)
 
         then:
-        constructorGenerator.constructors >> { [methodSpec] as Set }
+        1 * constructorGenerator.constructors >> { [methodSpec] as Set }
+        0 * _
 
         expect:
         res in Set

@@ -1,26 +1,25 @@
 package io.github.joke.objects.generator;
 
-import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
+import io.github.joke.objects.scanner.Property;
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.List;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
-import static io.github.joke.objects.generator.GeneratorUtils.determineSetterName;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PUBLIC;
+import static org.apache.commons.lang3.StringUtils.capitalize;
 
 @NotNull
 public class SettersGenerator {
 
-    private final List<FieldSpec> properties;
+    private final List<Property> properties;
 
     @Inject
-    public SettersGenerator(@Named("properties") final List<FieldSpec> properties) {
+    public SettersGenerator(final List<Property> properties) {
         this.properties = properties;
     }
 
@@ -30,13 +29,18 @@ public class SettersGenerator {
                 .collect(toSet());
     }
 
-    private MethodSpec buildSetter(final FieldSpec fieldSpec) {
-        final String setterName = determineSetterName(fieldSpec.name);
+    private MethodSpec buildSetter(final Property property) {
+        final String propertyName = property.getName();
+        final String setterName = determineSetterName(propertyName);
         return MethodSpec.methodBuilder(setterName)
                 .addModifiers(PUBLIC)
-                .addParameter(fieldSpec.type, fieldSpec.name, FINAL)
-                .addStatement("this.$N = $N", fieldSpec.name, fieldSpec.name)
+                .addParameter(property.getType(), propertyName, FINAL)
+                .addStatement("this.$N = $N", propertyName, propertyName)
                 .build();
+    }
+
+    public static String determineSetterName(final String propertyName) {
+        return "set" + capitalize(propertyName);
     }
 
 }

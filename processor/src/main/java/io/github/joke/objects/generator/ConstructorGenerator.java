@@ -1,11 +1,10 @@
 package io.github.joke.objects.generator;
 
-import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
+import io.github.joke.objects.scanner.Property;
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.List;
 import java.util.Set;
 
@@ -16,10 +15,10 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 @NotNull
 public class ConstructorGenerator {
 
-    private final List<FieldSpec> properties;
+    private final List<Property> properties;
 
     @Inject
-    public ConstructorGenerator(@Named("properties") final List<FieldSpec> properties) {
+    public ConstructorGenerator(final List<Property> properties) {
         this.properties = properties;
     }
 
@@ -32,8 +31,9 @@ public class ConstructorGenerator {
         final MethodSpec.Builder builder = MethodSpec.constructorBuilder()
                 .addModifiers(PUBLIC);
         properties.forEach(field -> {
-            builder.addParameter(field.type, field.name, FINAL);
-            builder.addStatement("this.$N = $N", field.name, field.name);
+            final String name = field.getName();
+            builder.addParameter(field.getType(), name, FINAL);
+            builder.addStatement("this.$N = $N", name, name);
         });
         return builder.build();
     }

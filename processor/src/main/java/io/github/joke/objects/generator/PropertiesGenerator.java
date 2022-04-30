@@ -1,41 +1,34 @@
 package io.github.joke.objects.generator;
 
 import com.squareup.javapoet.FieldSpec;
-import com.squareup.javapoet.TypeName;
+import io.github.joke.objects.scanner.Property;
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
 import java.util.List;
+import java.util.Set;
 
-import static java.util.stream.Collectors.toList;
-import static io.github.joke.objects.generator.GeneratorUtils.determinePropertyName;
-import static io.github.joke.objects.generator.GeneratorUtils.filterGetters;
+import static java.util.stream.Collectors.toSet;
 import static javax.lang.model.element.Modifier.PRIVATE;
-import static javax.lang.model.util.ElementFilter.methodsIn;
 
 @NotNull
 public class PropertiesGenerator {
 
-    private final TypeElement element;
+    private final List<Property> properties;
 
     @Inject
-    public PropertiesGenerator(final TypeElement element) {
-        this.element = element;
+    public PropertiesGenerator(final List<Property> properties) {
+        this.properties = properties;
     }
 
-    public List<FieldSpec> getProperties() {
-        final List<ExecutableElement> methods = methodsIn(element.getEnclosedElements());
-        return filterGetters(methods).stream()
+    public Set<FieldSpec> getProperties() {
+        return properties.stream()
                 .map(this::buildProperties)
-                .collect(toList());
+                .collect(toSet());
     }
 
-    private FieldSpec buildProperties(final ExecutableElement element) {
-        final String propertyName = determinePropertyName(element);
-        final TypeName type = TypeName.get(element.getReturnType());
-        return FieldSpec.builder(type, propertyName, PRIVATE)
+    private FieldSpec buildProperties(final Property property) {
+        return FieldSpec.builder(property.getType(), property.getName(), PRIVATE)
                 .build();
     }
 

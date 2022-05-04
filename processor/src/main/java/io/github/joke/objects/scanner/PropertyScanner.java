@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
+import static javax.lang.model.element.Modifier.ABSTRACT;
 import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.STATIC;
 import static javax.lang.model.type.TypeKind.VOID;
@@ -101,7 +102,8 @@ public class PropertyScanner {
 
     @VisibleForTesting
     protected boolean isExcludedFromPropertyGeneration(final ExecutableElement element) {
-        return element.getModifiers().contains(STATIC) ||
+        return !element.getModifiers().contains(ABSTRACT) ||
+                element.getModifiers().contains(STATIC) ||
                 element.getReturnType().getKind().equals(VOID) ||
                 element.isVarArgs() ||
                 !element.getParameters().isEmpty();

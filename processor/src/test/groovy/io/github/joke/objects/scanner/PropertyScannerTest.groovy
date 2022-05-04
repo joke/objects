@@ -14,7 +14,7 @@ import javax.lang.model.type.TypeMirror
 import static javax.lang.model.element.ElementKind.CLASS
 import static javax.lang.model.element.ElementKind.FIELD
 import static javax.lang.model.element.ElementKind.METHOD
-import static javax.lang.model.element.Modifier.FINAL
+import static javax.lang.model.element.Modifier.ABSTRACT
 import static javax.lang.model.element.Modifier.PRIVATE
 import static javax.lang.model.element.Modifier.PROTECTED
 import static javax.lang.model.element.Modifier.STATIC
@@ -171,12 +171,17 @@ class PropertyScannerTest extends Specification {
         res == excluded
 
         where:
-        modifiers | isVarArgs | kind   | parameters                  || excluded
-        [STATIC]  | false     | DOUBLE | []                          || true
-        [FINAL]   | true      | DOUBLE | []                          || true
-        [FINAL]   | false     | VOID   | []                          || true
-        [FINAL]   | false     | DOUBLE | [DeepMock(VariableElement)] || true
-        [FINAL]   | false     | DOUBLE | []                          || false
+        modifiers          | isVarArgs | kind   | parameters                  || excluded
+        [STATIC]           | false     | DOUBLE | []                          || true
+        []                 | true      | DOUBLE | []                          || true
+        []                 | false     | VOID   | []                          || true
+        []                 | false     | DOUBLE | [DeepMock(VariableElement)] || true
+        []                 | false     | DOUBLE | []                          || true
+        [STATIC, ABSTRACT] | false     | DOUBLE | []                          || true
+        [ABSTRACT]         | true      | DOUBLE | []                          || true
+        [ABSTRACT]         | false     | VOID   | []                          || true
+        [ABSTRACT]         | false     | DOUBLE | [DeepMock(VariableElement)] || true
+        [ABSTRACT]         | false     | DOUBLE | []                          || false
     }
 
     def 'from method'() {

@@ -9,15 +9,12 @@ import dagger.Provides;
 import dagger.multibindings.ElementsIntoSet;
 import io.github.joke.objects.generator.ClassGenerator;
 import io.github.joke.objects.generator.ConstructorGenerator;
+import io.github.joke.objects.generator.ImplementationFileGenerator;
 import io.github.joke.objects.generator.PropertiesGenerator;
-import io.github.joke.objects.scanner.Property;
-import io.github.joke.objects.scanner.PropertyScanner;
-import io.github.joke.objects.generator.TypeGenerator;
+import io.github.joke.objects.generator.scanner.Property;
+import io.github.joke.objects.generator.scanner.PropertyScanner;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.processing.Filer;
-import javax.annotation.processing.Messager;
-import javax.annotation.processing.ProcessingEnvironment;
 import java.util.List;
 import java.util.Set;
 
@@ -26,38 +23,33 @@ import java.util.Set;
 public interface CommonModule {
 
     @Provides
+    @ElementScope
     static List<Property> provideProperties(final PropertyScanner propertyScanner) {
         return propertyScanner.getProperties();
     }
 
     @Provides
+    @ElementScope
     @ElementsIntoSet
     static Set<FieldSpec> provideFields(final PropertiesGenerator propertiesGenerator) {
         return propertiesGenerator.getProperties();
     }
 
     @Provides
+    @ElementScope
     @ElementsIntoSet
-    static Set<JavaFile> provideJavaFile(final TypeGenerator typeGenerator) {
-        return typeGenerator.getJavaFile();
+    static Set<JavaFile> provideImplementation(final ImplementationFileGenerator implementationFileGenerator) {
+        return implementationFileGenerator.getJavaFile();
     }
 
     @Provides
-    static Filer provideFiler(final ProcessingEnvironment processingEnvironment) {
-        return processingEnvironment.getFiler();
-    }
-
-    @Provides
-    static Messager provideMessager(final ProcessingEnvironment processingEnvironment) {
-        return processingEnvironment.getMessager();
-    }
-
-    @Provides
+    @ElementScope
     static TypeSpec.Builder provideTypeSpecBuilder(final ClassGenerator classGenerator) {
         return classGenerator.getTypeBuilder();
     }
 
     @Provides
+    @ElementScope
     @ElementsIntoSet
     static Set<MethodSpec> provideConstructors(final ConstructorGenerator constructorGenerator) {
         return constructorGenerator.getConstructors();

@@ -1,49 +1,46 @@
 package io.github.joke.objects.handlers;
 
+import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
-import dagger.Component;
 import dagger.Provides;
+import dagger.Subcomponent;
 import dagger.multibindings.ElementsIntoSet;
+import io.github.joke.objects.Target;
 import io.github.joke.objects.generator.GettersGenerator;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.inject.Inject;
 import java.util.Set;
 
-import static io.github.joke.objects.handlers.AbstractHandler.ProcessorTarget.IMMUTABLE;
-
+import static io.github.joke.objects.Target.IMMUTABLE;
 
 @NotNull
-public class ImmutableHandler extends AbstractHandler {
+@ElementScope
+@Subcomponent(modules = {ImmutableHandler.Module.class, CommonModule.class})
+public interface ImmutableHandler extends Handler {
 
-    @Inject
-    public ImmutableHandler(final ProcessingEnvironment processingEnvironment) {
-        super(DaggerImmutableHandler_Factory.builder(), processingEnvironment);
-    }
+    @Override
+    Set<JavaFile> process();
 
     @dagger.Module
-    public interface Module {
-        // all the generators
+    interface Module {
+        // additional components
 
         @Provides
-        static ProcessorTarget provideProcessorTarget() {
+        @ElementScope
+        static Target provideProcessorTarget() {
             return IMMUTABLE;
         }
 
         @Provides
+        @ElementScope
         @ElementsIntoSet
         static Set<MethodSpec> provideGetters(final GettersGenerator gettersGenerator) {
             return gettersGenerator.getGetters();
         }
-
     }
 
-    @Component(modules = {Module.class, CommonModule.class})
-    interface Factory extends AbstractHandler.Factory {
-        @Component.Builder
-        interface Builder extends AbstractHandler.Builder<Factory> {
-        }
+    @Subcomponent.Builder
+    interface Builder extends Handler.Builder<ImmutableHandler, Builder> {
     }
 
 }

@@ -1,7 +1,8 @@
 package io.github.joke.objects;
 
 import com.google.auto.service.AutoService;
-import io.github.joke.objects.handlers.Handler;
+import io.github.joke.objects.processor.AnnotationDispatcher;
+import io.github.joke.objects.processor.Processor;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -11,32 +12,27 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
-import java.lang.annotation.Annotation;
-import java.util.Map;
 import java.util.Set;
 
-import static io.github.joke.objects.AnnotationHandlerBuilderFactory.handlers;
 import static javax.lang.model.SourceVersion.latestSupported;
-import static javax.lang.model.util.ElementFilter.typesIn;
 
 @NotNull
 @SupportedOptions({"debug"})
 @SupportedAnnotationTypes("io.github.joke.objects.*")
 @AutoService(javax.annotation.processing.Processor.class)
-public class Processor extends AbstractProcessor {
+public class AnnotationProcessor extends AbstractProcessor {
 
-    private Map<Class<? extends Annotation>, Handler> handlers;
+    private AnnotationDispatcher annotationDispatcher;
 
     @Override
     public synchronized void init(final ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
-        this.handlers = handlers(processingEnv);
+        this.annotationDispatcher = Processor.create(processingEnv).annotationDispatcher();
     }
 
     @Override
     public boolean process(final Set<? extends TypeElement> annotations, final RoundEnvironment roundEnv) {
-        handlers.forEach((annotation, handler) -> typesIn(roundEnv.getElementsAnnotatedWith(annotation))
-                .forEach(handler::process));
+        annotationDispatcher.dispatch(roundEnv);
         return false;
     }
 

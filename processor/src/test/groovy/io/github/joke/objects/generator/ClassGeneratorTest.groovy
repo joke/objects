@@ -1,46 +1,72 @@
 package io.github.joke.objects.generator
 
+import com.squareup.javapoet.AnnotationSpec
+import com.squareup.javapoet.ClassName
 import spock.lang.Specification
 import spock.lang.Subject
 
-import javax.annotation.processing.ProcessingEnvironment
 import javax.lang.model.element.TypeElement
+import javax.lang.model.type.DeclaredType
 
-import static javax.lang.model.SourceVersion.RELEASE_10
-import static javax.lang.model.SourceVersion.RELEASE_7
-import static javax.lang.model.SourceVersion.RELEASE_8
-import static javax.lang.model.SourceVersion.RELEASE_9
+import static javax.lang.model.element.ElementKind.CLASS
+import static javax.lang.model.element.ElementKind.INTERFACE
+import static javax.lang.model.element.Modifier.PUBLIC
 
 class ClassGeneratorTest extends Specification {
 
     TypeElement element = DeepMock()
-    ProcessingEnvironment processingEnvironment = DeepMock()
+    AnnotationSpec annotationSpec = DeepMock()
 
     @Subject
-    ClassGenerator classGenerator = Spy(new ClassGenerator(element, processingEnvironment))
+    ClassGenerator classGenerator = Spy(new ClassGenerator(element, annotationSpec))
 
-    def 'generated annotation for is java version dependent'() {
+    def 'get type builder for interface'() {
+        setup:
+        TypeElement element1 = Mock()
+        DeclaredType declaredType = Mock()
+
         when:
-        def res = classGenerator.generatedAnnotation
+        def res = classGenerator.typeBuilder
 
         then:
-        1 * processingEnvironment.sourceVersion >> javaVersion
-        1 * classGenerator._
-        0 * _
+        1 * classGenerator.determineClassName() >> ClassName.get(String)
+        1 * element.kind  >> INTERFACE
+        1 * element.asType() >> declaredType
+        1 * declaredType.accept(_, _) >> ClassName.get(Set)
+        1 * declaredType.asElement() >> element1
+        1 * element1.enclosedElements >> []
+        1 * element1.interfaces >> []
 
-        expect:
         verifyAll(res) {
-            "$type" == expectedType
-            members.size() == 1
-            "${members.value[0]}" == '"io.github.joke.objects.generator.PropertiesGenerator"'
+            superinterfaces == [ ClassName.get(Set) ]
+            modifiers == [PUBLIC]
+            annotations == [annotationSpec]
+            name == 'String'
         }
-
-        where:
-        javaVersion || expectedType
-        RELEASE_7   || 'javax.annotation.Generated'
-        RELEASE_8   || 'javax.annotation.Generated'
-        RELEASE_9   || 'javax.annotation.processing.Generated'
-        RELEASE_10  || 'javax.annotation.processing.Generated'
     }
 
+    def 'get type builder for abstract class'() {
+        setup:
+        TypeElement element1 = Mock()
+        DeclaredType declaredType = Mock()
+
+        when:
+        def res = classGenerator.typeBuilder
+
+        then:
+        1 * classGenerator.determineClassName() >> ClassName.get(String)
+        1 * element.kind  >> CLASS
+        1 * element.asType() >> declaredType
+        1 * declaredType.accept(_, _) >> ClassName.get(Set)
+        1 * declaredType.asElement() >> element1
+        1 * element1.enclosedElements >> []
+        1 * element1.interfaces >> []
+
+        verifyAll(res) {
+            superclass == ClassName.get(Set)
+            modifiers == [PUBLIC]
+            annotations == [annotationSpec]
+            name == 'String'
+        }
+    }
 }

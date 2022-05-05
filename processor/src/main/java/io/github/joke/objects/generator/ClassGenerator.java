@@ -3,37 +3,36 @@ package io.github.joke.objects.generator;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeSpec;
+import io.github.joke.objects.handlers.ElementScope;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.VisibleForTesting;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.lang.model.element.TypeElement;
 
 import static com.squareup.javapoet.TypeSpec.classBuilder;
-import static javax.lang.model.SourceVersion.RELEASE_8;
 import static javax.lang.model.element.Modifier.PUBLIC;
-import static org.apache.commons.lang3.ObjectUtils.compare;
 
 // Generate derived class
 @NotNull
+@ElementScope
 public class ClassGenerator {
 
     private final TypeElement element;
-    private final ProcessingEnvironment processingEnvironment;
+    private final AnnotationSpec generatedAnnotation;
 
     @Inject
-    public ClassGenerator(final TypeElement element, final ProcessingEnvironment processingEnvironment) {
+    public ClassGenerator(final TypeElement element, @Named("generated") final AnnotationSpec generatedAnnotation) {
         this.element = element;
-        this.processingEnvironment = processingEnvironment;
+        this.generatedAnnotation = generatedAnnotation;
     }
 
     public TypeSpec.Builder getTypeBuilder() {
-        final ClassName className = ClassName.get(element);
-        final ClassName implementationName = className.peerClass(className.simpleName() + "Impl");
+        final ClassName implementationName = determineClassName();
 
         final TypeSpec.Builder builder = classBuilder(implementationName)
-                .addAnnotation(getGeneratedAnnotation())
+                .addAnnotation(generatedAnnotation)
                 .addModifiers(PUBLIC);
 
         if (element.getKind().isInterface()) {
@@ -43,11 +42,9 @@ public class ClassGenerator {
     }
 
     @VisibleForTesting
-    protected AnnotationSpec getGeneratedAnnotation() {
-        final boolean isJava9 = compare(processingEnvironment.getSourceVersion(), RELEASE_8) > 0;
-        final String generatorAnnotationPackage = isJava9 ? "javax.annotation.processing" : "javax.annotation";
-        return AnnotationSpec.builder(ClassName.get(generatorAnnotationPackage, "Generated"))
-                .addMember("value", "$S", PropertiesGenerator.class.getCanonicalName())
-                .build();
+    protected ClassName determineClassName() {
+        final ClassName className = ClassName.get(element);
+        return className.peerClass(className.simpleName() + "Impl");
     }
+
 }

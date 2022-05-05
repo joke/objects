@@ -17,6 +17,12 @@ public abstract class Address {
     protected abstract String getZoo2();
     abstract String getZoo3();
 
+    abstract void setZoo3(String name);
+
+    public String getZoo4() {
+        return "";
+    }
+
 //    abstract String getCity();
 
 

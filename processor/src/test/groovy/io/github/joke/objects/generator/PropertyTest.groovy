@@ -1,7 +1,6 @@
 package io.github.joke.objects.generator
 
-
-import io.github.joke.objects.scanner.Property
+import io.github.joke.objects.generator.scanner.Property
 import spock.lang.Specification
 import spock.lang.Subject
 

@@ -1,6 +1,7 @@
-package io.github.joke.objects.scanner;
+package io.github.joke.objects.generator.scanner;
 
 import com.squareup.javapoet.TypeName;
+import io.github.joke.objects.handlers.ElementScope;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.VisibleForTesting;
@@ -26,6 +27,7 @@ import static org.apache.commons.lang3.RegExUtils.removeFirst;
 import static org.apache.commons.lang3.StringUtils.startsWithAny;
 import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
+@ElementScope
 public class PropertyScanner {
 
     private final Messager messager;

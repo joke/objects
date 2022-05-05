@@ -3,32 +3,18 @@ package io.github.joke.objects.handlers
 import com.squareup.javapoet.MethodSpec
 import io.github.joke.objects.generator.GettersGenerator
 import io.github.joke.objects.generator.SettersGenerator
-import io.github.joke.objects.handlers.MutableHandler.Factory.Builder
 import io.github.joke.spockmockable.Mockable
 import spock.lang.Specification
 import spock.lang.Subject
 
-import javax.annotation.processing.ProcessingEnvironment
-
-import static io.github.joke.objects.handlers.AbstractHandler.ProcessorTarget.MUTABLE
+import static io.github.joke.objects.Target.MUTABLE
 import static io.github.joke.objects.handlers.MutableHandler.Module.provideGetters
 import static io.github.joke.objects.handlers.MutableHandler.Module.provideProcessorTarget
 import static io.github.joke.objects.handlers.MutableHandler.Module.provideSetters
-import static org.apache.commons.lang3.reflect.FieldUtils.readField
 
 @Mockable(MethodSpec)
+@Subject(MutableHandler)
 class MutableHandlerTest extends Specification {
-
-    ProcessingEnvironment processingEnvironment = DeepMock()
-
-    @Subject(MutableHandler)
-    def mutableHandler = new MutableHandler(processingEnvironment)
-
-    def 'constructor'() {
-        expect:
-        readField(mutableHandler, 'processingEnvironment', true) == processingEnvironment
-        readField(mutableHandler, 'factoryBuilder', true) in Builder
-    }
 
     def 'module provide processor target'() {
         expect:

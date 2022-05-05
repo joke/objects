@@ -1,4 +1,4 @@
-package io.github.joke.objects.scanner
+package io.github.joke.objects.generator.scanner
 
 import com.squareup.javapoet.TypeName
 import spock.lang.Specification

@@ -5,23 +5,17 @@ import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.TypeSpec.Builder
 import io.github.joke.objects.generator.ClassGenerator
 import io.github.joke.objects.generator.ConstructorGenerator
+import io.github.joke.objects.generator.ImplementationFileGenerator
 import io.github.joke.objects.generator.PropertiesGenerator
-import io.github.joke.objects.scanner.Property
-import io.github.joke.objects.scanner.PropertyScanner
-import io.github.joke.objects.generator.TypeGenerator
+import io.github.joke.objects.generator.scanner.Property
+import io.github.joke.objects.generator.scanner.PropertyScanner
 import io.github.joke.spockmockable.Mockable
 import spock.lang.Specification
 import spock.lang.Subject
 
-import javax.annotation.processing.Filer
-import javax.annotation.processing.Messager
-import javax.annotation.processing.ProcessingEnvironment
-
 import static io.github.joke.objects.handlers.CommonModule.provideConstructors
 import static io.github.joke.objects.handlers.CommonModule.provideFields
-import static io.github.joke.objects.handlers.CommonModule.provideFiler
-import static io.github.joke.objects.handlers.CommonModule.provideJavaFile
-import static io.github.joke.objects.handlers.CommonModule.provideMessager
+import static io.github.joke.objects.handlers.CommonModule.provideImplementation
 import static io.github.joke.objects.handlers.CommonModule.provideProperties
 import static io.github.joke.objects.handlers.CommonModule.provideTypeSpecBuilder
 
@@ -64,11 +58,11 @@ class CommonModuleTest extends Specification {
 
     def 'provide java file'() {
         setup:
-        TypeGenerator typeGenerator = DeepMock()
+        ImplementationFileGenerator typeGenerator = DeepMock()
         FieldSpec fieldSpec = DeepMock()
 
         when:
-        def res = provideJavaFile(typeGenerator)
+        def res = provideImplementation(typeGenerator)
 
         then:
         1 * typeGenerator.javaFile >> { [fieldSpec] as Set }
@@ -77,38 +71,6 @@ class CommonModuleTest extends Specification {
         expect:
         res in Set
         res ==~ [fieldSpec]
-    }
-
-    def 'provide filer'() {
-        setup:
-        ProcessingEnvironment processingEnvironment = DeepMock()
-        Filer filer = DeepMock()
-
-        when:
-        def res = provideFiler(processingEnvironment)
-
-        then:
-        1 * processingEnvironment.filer >> filer
-        0 * _
-
-        expect:
-        res == filer
-    }
-
-    def 'provide messager'() {
-        setup:
-        ProcessingEnvironment processingEnvironment = DeepMock()
-        Messager messager = DeepMock()
-
-        when:
-        def res = provideMessager(processingEnvironment)
-
-        then:
-        1 * processingEnvironment.messager >> messager
-        0 * _
-
-        expect:
-        res == messager
     }
 
     def 'provide type spec builder'() {

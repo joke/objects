@@ -33,11 +33,11 @@ public class AnnotationDispatcher {
     @VisibleForTesting
     protected void processAndWrite(final Handler.Builder<?, ?> handlerBuilder, final Set<TypeElement> typeElements) {
         typeElements.stream()
-                .map(t -> handlerBuilder.typeElement(t))
-                .map(builder -> builder.build())
-                .map(h -> h.process())
+                .map(handlerBuilder::typeElement)
+                .map(Handler.Builder::build)
+                .map(Handler::process)
                 .flatMap(Collection::stream)
-                .forEach(f -> fileWriter.write(f));
+                .forEach(fileWriter::write);
     }
 
     @VisibleForTesting

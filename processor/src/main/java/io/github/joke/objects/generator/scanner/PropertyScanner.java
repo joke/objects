@@ -12,6 +12,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.util.Elements;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -30,11 +31,13 @@ import static org.apache.commons.lang3.StringUtils.uncapitalize;
 @ElementScope
 public class PropertyScanner {
 
+    private final Elements elements;
     private final Messager messager;
     private final TypeElement element;
 
     @Inject
-    public PropertyScanner(final Messager messager, final TypeElement element) {
+    public PropertyScanner(final Elements elements, final Messager messager, final TypeElement element) {
+        this.elements = elements;
         this.messager = messager;
         this.element = element;
     }
@@ -48,7 +51,7 @@ public class PropertyScanner {
     @NotNull
     @VisibleForTesting
     protected List<Property> determineProperties() {
-        return element.getEnclosedElements()
+        return elements.getAllMembers(element)
                 .stream()
                 .map(this::buildPropertyInfo)
                 .filter(Objects::nonNull)

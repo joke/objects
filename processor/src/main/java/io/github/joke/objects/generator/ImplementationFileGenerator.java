@@ -5,7 +5,7 @@ import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
-import io.github.joke.objects.handlers.TypeElementScope;
+import io.github.joke.objects.scopes.TypeElementScope;
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;

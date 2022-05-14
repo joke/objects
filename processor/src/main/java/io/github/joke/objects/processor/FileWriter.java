@@ -15,18 +15,18 @@ import static javax.tools.Diagnostic.Kind.ERROR;
 
 @NotNull
 @Singleton
-public class FileWriter {
+class FileWriter {
 
     private final Filer filer;
     private final Messager messager;
 
     @Inject
-    public FileWriter(final Filer filer, final Messager messager) {
+    FileWriter(final Filer filer, final Messager messager) {
         this.filer = filer;
         this.messager = messager;
     }
 
-    public void write(final JavaFile javaFile) {
+    void write(final JavaFile javaFile) {
         try {
             javaFile.writeTo(filer);
         } catch (final IOException e) {

@@ -1,13 +1,17 @@
 package io.github.joke.objects.handlers;
 
-import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
+import dagger.Binds;
+import dagger.BindsInstance;
+import dagger.Component;
 import dagger.Provides;
-import dagger.Subcomponent;
 import dagger.multibindings.ElementsIntoSet;
 import io.github.joke.objects.Target;
-import io.github.joke.objects.generator.GettersGenerator;
-import io.github.joke.objects.generator.SettersGenerator;
+import io.github.joke.objects.generator.SetterGenerator;
+import io.github.joke.objects.generator.extractors.Attribute;
+import io.github.joke.objects.processor.Processor;
+import io.github.joke.objects.scopes.AttributeScope;
+import io.github.joke.objects.scopes.TypeElementScope;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -16,11 +20,8 @@ import static io.github.joke.objects.Target.MUTABLE;
 
 @NotNull
 @TypeElementScope
-@Subcomponent(modules = {MutableHandler.Module.class, CommonModule.class})
+@Component(dependencies = Processor.class, modules = {MutableHandler.Module.class, CommonModule.class})
 public interface MutableHandler extends Handler {
-
-    @Override
-    Set<JavaFile> process();
 
     @dagger.Module
     interface Module {
@@ -32,23 +33,42 @@ public interface MutableHandler extends Handler {
             return MUTABLE;
         }
 
-        @Provides
+        @Binds
         @TypeElementScope
-        @ElementsIntoSet
-        static Set<MethodSpec> provideGetters(final GettersGenerator gettersGenerator) {
-            return gettersGenerator.getGetters();
-        }
+        @SuppressWarnings("unused")
+        Handler provideHandler(MutableHandler mutableHandler);
 
         @Provides
         @TypeElementScope
-        @ElementsIntoSet
-        static Set<MethodSpec> provideSetters(final SettersGenerator settersGenerator) {
-            return settersGenerator.getSetters();
+        static AttributeHandler.Factory<?> provideAttributeComponentFactory() {
+            return DaggerMutableHandler_MutableAttributeHandler.factory();
         }
     }
 
-    @Subcomponent.Builder
-    interface Builder extends Handler.Builder<MutableHandler, Builder> {
+    @Component.Factory
+    interface Factory extends Handler.Factory<MutableHandler> {
+    }
+
+    @AttributeScope
+    @Component(dependencies = {Processor.class, Handler.class}, modules = {MutableAttributeHandler.AttributeModule.class})
+    interface MutableAttributeHandler extends AttributeHandler {
+
+        @Component.Factory
+        interface Factory extends AttributeHandler.Factory<MutableAttributeHandler> {
+            @Override
+            MutableAttributeHandler create(Processor processor, Handler handler, @BindsInstance Attribute attribute);
+        }
+
+        @dagger.Module(includes = AttributeCommonModule.class)
+        interface AttributeModule {
+
+            @Provides
+            @AttributeScope
+            @ElementsIntoSet
+            static Set<MethodSpec> provideSetter(final SetterGenerator generator) {
+                return generator.generate();
+            }
+        }
     }
 
 }

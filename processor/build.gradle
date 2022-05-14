@@ -21,18 +21,18 @@ dependencies {
     compileOnly 'org.jetbrains:annotations'
 
     implementation project(':annotations')
-    implementation 'javax.annotation:javax.annotation-api'
     implementation 'com.google.dagger:dagger'
+    implementation 'javax.annotation:javax.annotation-api'
 
     implementation enforcedPlatform(project(':dependencies'))
     implementation 'com.squareup:javapoet'
     implementation 'org.apache.commons:commons-lang3'
 
-    testImplementation 'org.slf4j:slf4j-simple'
     testImplementation 'io.github.joke:spock-deepmock'
-    testImplementation 'org.spockframework:spock-core'
     testImplementation 'io.github.joke:spock-mockable'
-
+    testImplementation 'org.objenesis:objenesis'
+    testImplementation 'org.slf4j:slf4j-simple'
+    testImplementation 'org.spockframework:spock-core'
 }
 
 tasks.withType(JavaCompile) {
@@ -45,7 +45,10 @@ tasks.withType(JavaCompile) {
 
 test {
     useJUnitPlatform()
-    jvmArgs += ['--add-opens=java.compiler/javax.annotation.processing=ALL-UNNAMED']
+    jvmArgs([
+            "-javaagent:${classpath.find { it.name.contains('spock-mockable') }.absolutePath}",
+            '--add-opens=java.compiler/javax.annotation.processing=ALL-UNNAMED'
+    ])
 }
 
 pitest {

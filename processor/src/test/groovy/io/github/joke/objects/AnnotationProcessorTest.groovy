@@ -1,6 +1,6 @@
 package io.github.joke.objects
 
-import io.github.joke.objects.processor.AnnotationDispatcher
+import io.github.joke.objects.processor.RoundProcessor
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -25,7 +25,7 @@ class AnnotationProcessorTest extends Specification {
 
         then:
         readField(processor, 'processingEnv', true) == processingEnvironment
-        readField(processor, 'annotationDispatcher', true)
+        readField(processor, 'roundProcessor', true) in RoundProcessor
     }
 
     def 'supported annotations'() {
@@ -53,14 +53,14 @@ class AnnotationProcessorTest extends Specification {
     def 'start dispatching'() {
         setup:
         RoundEnvironment roundEnvironment = DeepMock()
-        AnnotationDispatcher annotationDispatcher = DeepMock()
-        writeDeclaredField(processor, 'annotationDispatcher', annotationDispatcher, true)
+        RoundProcessor roundProcessor = DeepMock()
+        writeDeclaredField(processor, 'roundProcessor', roundProcessor, true)
 
         when:
         processor.process([] as Set, roundEnvironment)
 
         then:
-        1 * annotationDispatcher.dispatch(roundEnvironment) >> {}
+        1 * roundProcessor.process(roundEnvironment) >> {}
         0 * _
     }
 }

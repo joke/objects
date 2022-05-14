@@ -1,37 +1,21 @@
 package io.github.joke.objects.handlers
 
-import com.squareup.javapoet.MethodSpec
-import io.github.joke.objects.generator.GettersGenerator
-import io.github.joke.spockmockable.Mockable
+import io.github.joke.objects.handlers.ImmutableHandler.ImmutableAttributeHandler
 import spock.lang.Specification
 import spock.lang.Subject
 
 import static io.github.joke.objects.Target.IMMUTABLE
-import static io.github.joke.objects.handlers.ImmutableHandler.Module.provideGetters
-import static io.github.joke.objects.handlers.ImmutableHandler.Module.provideProcessorTarget
 
-@Mockable(MethodSpec)
 @Subject(ImmutableHandler)
 class ImmutableHandlerTest extends Specification {
 
     def 'module provide getters'() {
         expect:
-        provideProcessorTarget() == IMMUTABLE
+        ImmutableHandler.Module.provideProcessorTarget() == IMMUTABLE
     }
 
-    def 'module provide processor target'() {
-        setup:
-        GettersGenerator gettersGenerator = DeepMock()
-        MethodSpec methodSpec = DeepMock()
-
-        when:
-        def res = provideGetters(gettersGenerator)
-
-        then:
-        1 * gettersGenerator.getters >> { [methodSpec] as Set }
-
+    def 'module provide attribute component factory'() {
         expect:
-        res ==~ [methodSpec]
+        ImmutableHandler.Module.provideAttributeComponentFactory() in ImmutableAttributeHandler.Factory
     }
-
 }

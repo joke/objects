@@ -3,7 +3,7 @@ package io.github.joke.objects.generator;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeSpec;
-import io.github.joke.objects.handlers.TypeElementScope;
+import io.github.joke.objects.scopes.TypeElementScope;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.VisibleForTesting;
 

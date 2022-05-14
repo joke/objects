@@ -1,16 +1,15 @@
 package io.github.joke.objects.processor;
 
 import com.squareup.javapoet.AnnotationSpec;
-import dagger.Binds;
 import dagger.MapKey;
 import dagger.Provides;
 import dagger.multibindings.IntoMap;
 import io.github.joke.objects.Immutable;
 import io.github.joke.objects.Mutable;
 import io.github.joke.objects.generator.GeneratedAnnotationGenerator;
+import io.github.joke.objects.handlers.DaggerImmutableHandler;
+import io.github.joke.objects.handlers.DaggerMutableHandler;
 import io.github.joke.objects.handlers.Handler;
-import io.github.joke.objects.handlers.ImmutableHandler;
-import io.github.joke.objects.handlers.MutableHandler;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
@@ -21,7 +20,7 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.lang.annotation.Annotation;
 
-@dagger.Module(subcomponents = {ImmutableHandler.class, MutableHandler.class})
+@dagger.Module
 interface ProcessorModule {
 
     @Provides
@@ -55,17 +54,20 @@ interface ProcessorModule {
         return generatedAnnotationGenerator.getGeneratedAnnotation();
     }
 
-    @Binds
     @IntoMap
+    @Provides
     @Singleton
     @AnnotationKey(Immutable.class)
-    Handler.Builder<?, ?> immutableHandler(ImmutableHandler.Builder immutableHandlerBuilder);
+    static Handler.Factory<?> immutableHandler() {
+        return DaggerImmutableHandler.factory();
+    }
 
-    @Binds
     @IntoMap
-    @Singleton
+    @Provides
     @AnnotationKey(Mutable.class)
-    Handler.Builder<?, ?> mutableHandler(MutableHandler.Builder mutableHandlerBuilder);
+    static Handler.Factory<?> mutableHandler() {
+        return DaggerMutableHandler.factory();
+    }
 
     @MapKey
     @interface AnnotationKey {

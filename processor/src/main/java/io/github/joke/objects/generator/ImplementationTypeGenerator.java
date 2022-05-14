@@ -3,7 +3,7 @@ package io.github.joke.objects.generator;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeSpec;
-import io.github.joke.objects.handlers.ElementScope;
+import io.github.joke.objects.handlers.TypeElementScope;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.VisibleForTesting;
 
@@ -16,7 +16,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 
 // Generate derived class
 @NotNull
-@ElementScope
+@TypeElementScope
 public class ImplementationTypeGenerator {
 
     private final TypeElement element;

@@ -1,7 +1,7 @@
 package io.github.joke.objects.generator;
 
 import com.squareup.javapoet.MethodSpec;
-import io.github.joke.objects.handlers.ElementScope;
+import io.github.joke.objects.handlers.TypeElementScope;
 import io.github.joke.objects.generator.scanner.Property;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,7 +14,7 @@ import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PUBLIC;
 
 @NotNull
-@ElementScope
+@TypeElementScope
 public class ConstructorGenerator {
 
     private final List<Property> properties;

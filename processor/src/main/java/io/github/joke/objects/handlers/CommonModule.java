@@ -23,33 +23,33 @@ import java.util.Set;
 public interface CommonModule {
 
     @Provides
-    @ElementScope
+    @TypeElementScope
     static List<Property> provideProperties(final PropertyScanner propertyScanner) {
         return propertyScanner.getProperties();
     }
 
     @Provides
-    @ElementScope
+    @TypeElementScope
     @ElementsIntoSet
     static Set<FieldSpec> provideFields(final PropertiesGenerator propertiesGenerator) {
         return propertiesGenerator.getProperties();
     }
 
     @Provides
-    @ElementScope
+    @TypeElementScope
     @ElementsIntoSet
     static Set<JavaFile> provideImplementation(final ImplementationFileGenerator implementationFileGenerator) {
         return implementationFileGenerator.getJavaFile();
     }
 
     @Provides
-    @ElementScope
+    @TypeElementScope
     static TypeSpec.Builder provideTypeSpecBuilder(final ImplementationTypeGenerator implementationTypeGenerator) {
         return implementationTypeGenerator.getTypeBuilder();
     }
 
     @Provides
-    @ElementScope
+    @TypeElementScope
     @ElementsIntoSet
     static Set<MethodSpec> provideConstructors(final ConstructorGenerator constructorGenerator) {
         return constructorGenerator.getConstructors();

@@ -1,7 +1,7 @@
 package io.github.joke.objects.generator;
 
 import com.squareup.javapoet.FieldSpec;
-import io.github.joke.objects.handlers.ElementScope;
+import io.github.joke.objects.handlers.TypeElementScope;
 import io.github.joke.objects.generator.scanner.Property;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,7 +13,7 @@ import static java.util.stream.Collectors.toSet;
 import static javax.lang.model.element.Modifier.PRIVATE;
 
 @NotNull
-@ElementScope
+@TypeElementScope
 public class PropertiesGenerator {
 
     private final List<Property> properties;

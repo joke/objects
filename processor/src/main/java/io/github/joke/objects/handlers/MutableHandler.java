@@ -15,7 +15,7 @@ import java.util.Set;
 import static io.github.joke.objects.Target.MUTABLE;
 
 @NotNull
-@ElementScope
+@TypeElementScope
 @Subcomponent(modules = {MutableHandler.Module.class, CommonModule.class})
 public interface MutableHandler extends Handler {
 
@@ -27,20 +27,20 @@ public interface MutableHandler extends Handler {
         // additional components
 
         @Provides
-        @ElementScope
+        @TypeElementScope
         static Target provideProcessorTarget() {
             return MUTABLE;
         }
 
         @Provides
-        @ElementScope
+        @TypeElementScope
         @ElementsIntoSet
         static Set<MethodSpec> provideGetters(final GettersGenerator gettersGenerator) {
             return gettersGenerator.getGetters();
         }
 
         @Provides
-        @ElementScope
+        @TypeElementScope
         @ElementsIntoSet
         static Set<MethodSpec> provideSetters(final SettersGenerator settersGenerator) {
             return settersGenerator.getSetters();

@@ -10,6 +10,7 @@ import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
 import javax.lang.model.element.VariableElement
 import javax.lang.model.type.TypeMirror
+import javax.lang.model.util.Elements
 
 import static javax.lang.model.element.ElementKind.CLASS
 import static javax.lang.model.element.ElementKind.FIELD
@@ -25,14 +26,16 @@ import static org.apache.commons.lang3.reflect.FieldUtils.readField
 
 class PropertyScannerTest extends Specification {
 
+    Elements elements = DeepMock()
     Messager messager = DeepMock()
     TypeElement element = DeepMock()
 
     @Subject
-    def propertyScanner = Spy(new PropertyScanner(messager, element))
+    def propertyScanner = Spy(new PropertyScanner(elements, messager, element))
 
     def 'check constructor'() {
         expect:
+        readField(propertyScanner, 'elements', true) == elements
         readField(propertyScanner, 'messager', true) == messager
         readField(propertyScanner, 'element', true) == element
     }
@@ -64,7 +67,7 @@ class PropertyScannerTest extends Specification {
         def res = propertyScanner.determineProperties()
 
         then:
-        1 * element.enclosedElements >> [element1, element2]
+        1 * elements.getAllMembers(element) >> [element1, element2]
         1 * propertyScanner.buildPropertyInfo(element1) >> null
         1 * propertyScanner.buildPropertyInfo(element2) >> property
         1 * propertyScanner._

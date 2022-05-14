@@ -10,10 +10,14 @@ import spock.lang.Subject
 import javax.annotation.processing.Filer
 import javax.annotation.processing.Messager
 import javax.annotation.processing.ProcessingEnvironment
+import javax.lang.model.util.Elements
+import javax.lang.model.util.Types
 
+import static io.github.joke.objects.processor.ProcessorModule.provideElements
 import static io.github.joke.objects.processor.ProcessorModule.provideFiler
 import static io.github.joke.objects.processor.ProcessorModule.provideGeneratedAnnotation
 import static io.github.joke.objects.processor.ProcessorModule.provideMessager
+import static io.github.joke.objects.processor.ProcessorModule.provideTypes
 
 @Subject(ProcessorModule)
 @Mockable([FieldSpec, AnnotationSpec])
@@ -49,6 +53,38 @@ class ProcessorModuleTest extends Specification {
 
         expect:
         res == messager
+    }
+
+    def 'provide types'() {
+        setup:
+        Types types = DeepMock()
+        ProcessingEnvironment processingEnvironment = DeepMock()
+
+        when:
+        def res = provideTypes(processingEnvironment)
+
+        then:
+        1 * processingEnvironment.typeUtils >> types
+        0 * _
+
+        expect:
+        res == types
+    }
+
+    def 'provide elements'() {
+        setup:
+        Elements elements = DeepMock()
+        ProcessingEnvironment processingEnvironment = DeepMock()
+
+        when:
+        def res = provideElements(processingEnvironment)
+
+        then:
+        1 * processingEnvironment.elementUtils >> elements
+        0 * _
+
+        expect:
+        res == elements
     }
 
     def 'provide generated annotation'() {

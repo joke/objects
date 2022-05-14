@@ -17,6 +17,8 @@ import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 import java.lang.annotation.Annotation;
 
 @dagger.Module(subcomponents = {ImmutableHandler.class, MutableHandler.class})
@@ -32,6 +34,18 @@ interface ProcessorModule {
     @Singleton
     static Messager provideMessager(final ProcessingEnvironment processingEnvironment) {
         return processingEnvironment.getMessager();
+    }
+
+    @Provides
+    @Singleton
+    static Types provideTypes(final ProcessingEnvironment processingEnvironment) {
+        return processingEnvironment.getTypeUtils();
+    }
+
+    @Provides
+    @Singleton
+    static Elements provideElements(final ProcessingEnvironment processingEnvironment) {
+        return processingEnvironment.getElementUtils();
     }
 
     @Provides

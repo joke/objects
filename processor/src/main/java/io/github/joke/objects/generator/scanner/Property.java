@@ -3,6 +3,7 @@ package io.github.joke.objects.generator.scanner;
 import com.squareup.javapoet.TypeName;
 
 import javax.lang.model.element.Element;
+import java.util.StringJoiner;
 
 public class Property {
 
@@ -32,5 +33,15 @@ public class Property {
 
     public TypeName getType() {
         return type;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Property.class.getSimpleName() + "[", "]")
+                .add("origin=" + origin)
+                .add("name='" + name + "'")
+                .add("isSynthetic=" + isSynthetic)
+                .add("type=" + type)
+                .toString();
     }
 }

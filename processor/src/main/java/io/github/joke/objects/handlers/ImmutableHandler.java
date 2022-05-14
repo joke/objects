@@ -14,7 +14,7 @@ import java.util.Set;
 import static io.github.joke.objects.Target.IMMUTABLE;
 
 @NotNull
-@ElementScope
+@TypeElementScope
 @Subcomponent(modules = {ImmutableHandler.Module.class, CommonModule.class})
 public interface ImmutableHandler extends Handler {
 
@@ -26,13 +26,13 @@ public interface ImmutableHandler extends Handler {
         // additional components
 
         @Provides
-        @ElementScope
+        @TypeElementScope
         static Target provideProcessorTarget() {
             return IMMUTABLE;
         }
 
         @Provides
-        @ElementScope
+        @TypeElementScope
         @ElementsIntoSet
         static Set<MethodSpec> provideGetters(final GettersGenerator gettersGenerator) {
             return gettersGenerator.getGetters();

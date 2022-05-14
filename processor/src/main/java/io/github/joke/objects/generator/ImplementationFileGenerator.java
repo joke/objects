@@ -5,7 +5,7 @@ import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
-import io.github.joke.objects.handlers.ElementScope;
+import io.github.joke.objects.handlers.TypeElementScope;
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
@@ -15,7 +15,7 @@ import java.util.Set;
 import static java.util.Collections.singleton;
 
 @NotNull
-@ElementScope
+@TypeElementScope
 public class ImplementationFileGenerator {
 
     private final Set<MethodSpec> methods;

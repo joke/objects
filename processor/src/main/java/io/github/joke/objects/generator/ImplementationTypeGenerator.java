@@ -17,13 +17,13 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 // Generate derived class
 @NotNull
 @ElementScope
-public class ClassGenerator {
+public class ImplementationTypeGenerator {
 
     private final TypeElement element;
     private final AnnotationSpec generatedAnnotation;
 
     @Inject
-    public ClassGenerator(final TypeElement element, @Named("generated") final AnnotationSpec generatedAnnotation) {
+    public ImplementationTypeGenerator(final TypeElement element, @Named("generated") final AnnotationSpec generatedAnnotation) {
         this.element = element;
         this.generatedAnnotation = generatedAnnotation;
     }

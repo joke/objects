@@ -12,13 +12,13 @@ import static javax.lang.model.element.ElementKind.CLASS
 import static javax.lang.model.element.ElementKind.INTERFACE
 import static javax.lang.model.element.Modifier.PUBLIC
 
-class ClassGeneratorTest extends Specification {
+class ImplementationTypeGeneratorTest extends Specification {
 
     TypeElement element = DeepMock()
     AnnotationSpec annotationSpec = DeepMock()
 
     @Subject
-    ClassGenerator classGenerator = Spy(new ClassGenerator(element, annotationSpec))
+    ImplementationTypeGenerator classGenerator = Spy(new ImplementationTypeGenerator(element, annotationSpec))
 
     def 'get type builder for interface'() {
         setup:

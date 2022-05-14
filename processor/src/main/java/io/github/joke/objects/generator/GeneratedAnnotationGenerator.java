@@ -2,6 +2,7 @@ package io.github.joke.objects.generator;
 
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
+import io.github.joke.objects.AnnotationProcessor;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -28,7 +29,7 @@ public class GeneratedAnnotationGenerator {
         final boolean isJava9 = compare(processingEnvironment.getSourceVersion(), RELEASE_8) > 0;
         final String generatorAnnotationPackage = isJava9 ? "javax.annotation.processing" : "javax.annotation";
         return AnnotationSpec.builder(ClassName.get(generatorAnnotationPackage, "Generated"))
-                .addMember("value", "$S", PropertiesGenerator.class.getCanonicalName())
+                .addMember("value", "$S", AnnotationProcessor.class.getCanonicalName())
                 .build();
     }
 }

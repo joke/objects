@@ -29,7 +29,7 @@ class GeneratedAnnotationGeneratorTest extends Specification {
         verifyAll(res) {
             "$type" == expectedType
             members.size() == 1
-            "${members.value[0]}" == '"io.github.joke.objects.generator.PropertiesGenerator"'
+            "${members.value[0]}" == '"io.github.joke.objects.AnnotationProcessor"'
         }
 
         where:

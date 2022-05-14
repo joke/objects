@@ -3,7 +3,7 @@ package io.github.joke.objects.handlers
 import com.squareup.javapoet.FieldSpec
 import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.TypeSpec.Builder
-import io.github.joke.objects.generator.ClassGenerator
+import io.github.joke.objects.generator.ImplementationTypeGenerator
 import io.github.joke.objects.generator.ConstructorGenerator
 import io.github.joke.objects.generator.ImplementationFileGenerator
 import io.github.joke.objects.generator.PropertiesGenerator
@@ -75,7 +75,7 @@ class CommonModuleTest extends Specification {
 
     def 'provide type spec builder'() {
         setup:
-        ClassGenerator classGenerator = DeepMock()
+        ImplementationTypeGenerator classGenerator = DeepMock()
         Builder builder = DeepMock()
 
         when:

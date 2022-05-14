@@ -7,7 +7,7 @@ import com.squareup.javapoet.TypeSpec;
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.ElementsIntoSet;
-import io.github.joke.objects.generator.ClassGenerator;
+import io.github.joke.objects.generator.ImplementationTypeGenerator;
 import io.github.joke.objects.generator.ConstructorGenerator;
 import io.github.joke.objects.generator.ImplementationFileGenerator;
 import io.github.joke.objects.generator.PropertiesGenerator;
@@ -44,8 +44,8 @@ public interface CommonModule {
 
     @Provides
     @ElementScope
-    static TypeSpec.Builder provideTypeSpecBuilder(final ClassGenerator classGenerator) {
-        return classGenerator.getTypeBuilder();
+    static TypeSpec.Builder provideTypeSpecBuilder(final ImplementationTypeGenerator implementationTypeGenerator) {
+        return implementationTypeGenerator.getTypeBuilder();
     }
 
     @Provides

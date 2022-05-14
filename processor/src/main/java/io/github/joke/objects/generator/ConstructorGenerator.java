@@ -1,14 +1,19 @@
 package io.github.joke.objects.generator;
 
+import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.MethodSpec;
-import io.github.joke.objects.handlers.TypeElementScope;
-import io.github.joke.objects.generator.scanner.Property;
+import com.squareup.javapoet.ParameterSpec;
+import com.squareup.javapoet.TypeName;
+import io.github.joke.objects.generator.extractors.Attribute;
+import io.github.joke.objects.scopes.TypeElementScope;
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
+import static java.util.stream.Collectors.toSet;
 import static java.util.Collections.singleton;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PUBLIC;
@@ -17,26 +22,39 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 @TypeElementScope
 public class ConstructorGenerator {
 
-    private final List<Property> properties;
+    private final List<Attribute> attributes;
 
     @Inject
-    public ConstructorGenerator(final List<Property> properties) {
-        this.properties = properties;
+    public ConstructorGenerator(final List<Attribute> attributes) {
+        this.attributes = attributes;
     }
 
     public Set<MethodSpec> getConstructors() {
-        final MethodSpec allArgsConstructor = buildAllArgsConstructor();
-        return singleton(allArgsConstructor);
+        return singleton(buildAllArgsConstructor());
     }
 
     private MethodSpec buildAllArgsConstructor() {
         final MethodSpec.Builder builder = MethodSpec.constructorBuilder()
                 .addModifiers(PUBLIC);
-        properties.forEach(field -> {
-            final String name = field.getName();
-            builder.addParameter(field.getType(), name, FINAL);
-            builder.addStatement("this.$N = $N", name, name);
+        attributes.forEach(attribute -> {
+            final String name = attribute.getName();
+
+            final Set<AnnotationSpec> annotations = attribute.getAnnotations().stream()
+                    .map(AnnotationSpec::get)
+                    .collect(toSet());
+
+            final ParameterSpec parameter = ParameterSpec.builder(TypeName.get(attribute.getType()), name, FINAL)
+                    .addAnnotations(annotations)
+                    .build();
+
+            builder.addParameter(parameter);
+            if (attribute.isNotNull()) {
+                builder.addStatement("this.$N = $T.requireNonNull($N)", name, Objects.class, name);
+            } else {
+                builder.addStatement("this.$N = $N", name, name);
+            }
         });
+
         return builder.build();
     }
 

@@ -2,8 +2,6 @@ package io.github.joke.objects.processor
 
 import com.squareup.javapoet.JavaFile
 import com.squareup.javapoet.TypeSpec
-import io.github.joke.objects.processor.FileWriter
-import io.github.joke.spockmockable.Mockable
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -13,7 +11,6 @@ import javax.lang.model.element.Element
 
 import static javax.tools.Diagnostic.Kind.ERROR
 
-@Mockable([JavaFile, TypeSpec])
 class FileWriterTest extends Specification {
 
     Filer filer = DeepMock()

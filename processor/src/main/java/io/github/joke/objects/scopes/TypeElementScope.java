@@ -1,4 +1,4 @@
-package io.github.joke.objects.handlers;
+package io.github.joke.objects.scopes;
 
 import javax.inject.Scope;
 import java.lang.annotation.Documented;

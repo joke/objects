@@ -1,9 +1,7 @@
 package io.github.joke.objects.processor
 
 import com.squareup.javapoet.AnnotationSpec
-import com.squareup.javapoet.FieldSpec
 import io.github.joke.objects.generator.GeneratedAnnotationGenerator
-import io.github.joke.spockmockable.Mockable
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -13,15 +11,8 @@ import javax.annotation.processing.ProcessingEnvironment
 import javax.lang.model.util.Elements
 import javax.lang.model.util.Types
 
-import static io.github.joke.objects.processor.ProcessorModule.provideElements
-import static io.github.joke.objects.processor.ProcessorModule.provideFiler
-import static io.github.joke.objects.processor.ProcessorModule.provideGeneratedAnnotation
-import static io.github.joke.objects.processor.ProcessorModule.provideMessager
-import static io.github.joke.objects.processor.ProcessorModule.provideTypes
-
 @Subject(ProcessorModule)
-@Mockable([FieldSpec, AnnotationSpec])
-class ProcessorModuleTest extends Specification {
+class ProcessorAttributeModuleTest extends Specification {
 
     def 'provide filer'() {
         setup:
@@ -29,7 +20,7 @@ class ProcessorModuleTest extends Specification {
         ProcessingEnvironment processingEnvironment = DeepMock()
 
         when:
-        def res = provideFiler(processingEnvironment)
+        def res = ProcessorModule.provideFiler(processingEnvironment)
 
         then:
         1 * processingEnvironment.filer >> filer
@@ -45,7 +36,7 @@ class ProcessorModuleTest extends Specification {
         ProcessingEnvironment processingEnvironment = DeepMock()
 
         when:
-        def res = provideMessager(processingEnvironment)
+        def res = ProcessorModule.provideMessager(processingEnvironment)
 
         then:
         1 * processingEnvironment.messager >> messager
@@ -61,7 +52,7 @@ class ProcessorModuleTest extends Specification {
         ProcessingEnvironment processingEnvironment = DeepMock()
 
         when:
-        def res = provideTypes(processingEnvironment)
+        def res = ProcessorModule.provideTypes(processingEnvironment)
 
         then:
         1 * processingEnvironment.typeUtils >> types
@@ -77,7 +68,7 @@ class ProcessorModuleTest extends Specification {
         ProcessingEnvironment processingEnvironment = DeepMock()
 
         when:
-        def res = provideElements(processingEnvironment)
+        def res = ProcessorModule.provideElements(processingEnvironment)
 
         then:
         1 * processingEnvironment.elementUtils >> elements
@@ -93,7 +84,7 @@ class ProcessorModuleTest extends Specification {
         GeneratedAnnotationGenerator generatedAnnotationGenerator = DeepMock()
 
         when:
-        def res = provideGeneratedAnnotation(generatedAnnotationGenerator)
+        def res = ProcessorModule.provideGeneratedAnnotation(generatedAnnotationGenerator)
 
         then:
         1 * generatedAnnotationGenerator.generatedAnnotation >> annotationSpec
@@ -102,5 +93,4 @@ class ProcessorModuleTest extends Specification {
         expect:
         res == annotationSpec
     }
-
 }

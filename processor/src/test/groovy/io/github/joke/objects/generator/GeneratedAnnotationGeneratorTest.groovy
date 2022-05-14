@@ -1,5 +1,6 @@
 package io.github.joke.objects.generator
 
+import com.squareup.javapoet.AnnotationSpec
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -12,7 +13,7 @@ import static javax.lang.model.SourceVersion.RELEASE_9
 
 class GeneratedAnnotationGeneratorTest extends Specification {
 
-    ProcessingEnvironment processingEnvironment = DeepMock()
+    ProcessingEnvironment processingEnvironment = Mock()
 
     @Subject
     def generatedAnnotationGenerator = new GeneratedAnnotationGenerator(processingEnvironment)
@@ -23,6 +24,7 @@ class GeneratedAnnotationGeneratorTest extends Specification {
 
         then:
         1 * processingEnvironment.sourceVersion >> javaVersion
+        _ * AnnotationSpec._
         0 * _
 
         expect:

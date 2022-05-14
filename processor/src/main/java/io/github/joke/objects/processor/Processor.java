@@ -1,30 +1,37 @@
 package io.github.joke.objects.processor;
 
+import com.squareup.javapoet.AnnotationSpec;
 import dagger.BindsInstance;
 import dagger.Component;
+import io.github.joke.objects.generator.extractors.AnnotationExtractor;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
 @NotNull
 @Singleton
 @Component(modules = ProcessorModule.class)
-public interface Processor {
+public abstract class Processor {
 
-    AnnotationDispatcher annotationDispatcher();
+    @Named("generated")
+    public abstract AnnotationSpec generatedAnnotation();
+    public abstract Types types();
+    public abstract Elements elements();
+    public abstract AnnotationExtractor annotationExtractor();
+    protected abstract RoundProcessor roundProcessor();
 
-    static Processor create(final ProcessingEnvironment processingEnvironment) {
-        return DaggerProcessor.builder().processingEnvironment(processingEnvironment).build();
+    public static RoundProcessor create(final ProcessingEnvironment processingEnvironment) {
+        return DaggerProcessor.factory()
+                .create(processingEnvironment)
+                .roundProcessor();
     }
 
-    @Component.Builder
-    interface Builder {
-
-        @BindsInstance
-        Builder processingEnvironment(ProcessingEnvironment processingEnvironment);
-
-        Processor build();
+    @Component.Factory
+    interface Factory {
+        Processor create(@BindsInstance ProcessingEnvironment processingEnvironment);
     }
-
 }

@@ -1,54 +1,48 @@
 package io.github.joke.objects.handlers
 
 import com.squareup.javapoet.MethodSpec
-import io.github.joke.objects.generator.GettersGenerator
-import io.github.joke.objects.generator.SettersGenerator
-import io.github.joke.spockmockable.Mockable
+import io.github.joke.objects.generator.SetterGenerator
+import io.github.joke.objects.handlers.MutableHandler.MutableAttributeHandler
+import io.github.joke.objects.handlers.MutableHandler.MutableAttributeHandler.AttributeModule
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
 
 import static io.github.joke.objects.Target.MUTABLE
-import static io.github.joke.objects.handlers.MutableHandler.Module.provideGetters
-import static io.github.joke.objects.handlers.MutableHandler.Module.provideProcessorTarget
-import static io.github.joke.objects.handlers.MutableHandler.Module.provideSetters
 
-@Mockable(MethodSpec)
 @Subject(MutableHandler)
 class MutableHandlerTest extends Specification {
 
+    @Shared
+    MethodSpec methodSpec = DeepMock()
+
     def 'module provide processor target'() {
         expect:
-        provideProcessorTarget() == MUTABLE
+        MutableHandler.Module.provideProcessorTarget() == MUTABLE
     }
 
-    def 'module provide getters'() {
+    def 'module provide attribute component factory'() {
+        expect:
+        MutableHandler.Module.provideAttributeComponentFactory() in MutableAttributeHandler.Factory
+    }
+
+    def 'provide setter'() {
         setup:
-        GettersGenerator gettersGenerator = DeepMock()
-        MethodSpec methodSpec = DeepMock()
+        SetterGenerator generator = DeepMock()
 
         when:
-        def res = provideGetters(gettersGenerator)
+        def res = AttributeModule.provideSetter(generator)
 
         then:
-        1 * gettersGenerator.getters >> { [methodSpec] as Set }
+        1 * generator.generate() >> (method as Set)
+        0 * _
 
         expect:
-        res ==~ [methodSpec]
+        res ==~ expected
+
+        where:
+        method       || expected
+        []           || []
+        [methodSpec] || [methodSpec]
     }
-
-    def 'module provide provide setters'() {
-        setup:
-        SettersGenerator settersGenerator = DeepMock()
-        MethodSpec methodSpec = DeepMock()
-
-        when:
-        def res = provideSetters(settersGenerator)
-
-        then:
-        1 * settersGenerator.setters >> { [methodSpec] as Set }
-
-        expect:
-        res ==~ [methodSpec]
-    }
-
 }

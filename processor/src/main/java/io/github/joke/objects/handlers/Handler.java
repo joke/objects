@@ -2,6 +2,7 @@ package io.github.joke.objects.handlers;
 
 import com.squareup.javapoet.JavaFile;
 import dagger.BindsInstance;
+import io.github.joke.objects.processor.Processor;
 import org.jetbrains.annotations.NotNull;
 
 import javax.lang.model.element.TypeElement;
@@ -12,11 +13,8 @@ public interface Handler {
 
     Set<JavaFile> process();
 
-    interface Builder<T extends Handler, B extends Builder<?, ?>> {
+    interface Factory<T extends Handler> {
 
-        @BindsInstance
-        B typeElement(TypeElement typeElement);
-
-        T build();
+        T create(Processor processor, @BindsInstance TypeElement typeElement);
     }
 }

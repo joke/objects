@@ -3,7 +3,7 @@ package io.github.joke.objects.processor
 import com.squareup.javapoet.JavaFile
 import io.github.joke.objects.Immutable
 import io.github.joke.objects.Mutable
-import io.github.joke.objects.handlers.Handler
+import io.github.joke.objects.handlers.Handler.Factory
 import io.github.joke.objects.handlers.ImmutableHandler
 import spock.lang.Specification
 import spock.lang.Subject
@@ -15,22 +15,23 @@ import static javax.lang.model.element.ElementKind.CLASS
 import static javax.lang.model.element.ElementKind.FIELD
 import static org.apache.commons.lang3.reflect.FieldUtils.readField
 
-class AnnotationDispatcherTest extends Specification {
+class RoundProcessorTest extends Specification {
 
-    FileWriter fileWriter = DeepMock()
-    Handler.Builder mutableHandlerBuilder = Mock()
-    Handler.Builder immutableHandlerBuilder = Mock()
-    def handlers = [(Mutable): mutableHandlerBuilder, (Immutable): immutableHandlerBuilder]
+    Processor processor = Mock()
+    FileWriter fileWriter = Mock()
+    Factory mutableHandlerFactory = Mock()
+    Factory immutableHandlerFactory = Mock()
+    def handlers = [(Mutable): mutableHandlerFactory, (Immutable): immutableHandlerFactory]
 
     @Subject
-    def annotationDispatcher = Spy(new AnnotationDispatcher(fileWriter, handlers))
+    def roundProcessor = Spy(new RoundProcessor(processor, fileWriter, handlers))
 
     RoundEnvironment roundEnvironment = DeepMock()
 
     def 'constructor'() {
         expect:
-        readField(annotationDispatcher, 'fileWriter', true) == fileWriter
-        readField(annotationDispatcher, 'handlerBuilders', true) == handlers
+        readField(roundProcessor, 'fileWriter', true) == fileWriter
+        readField(roundProcessor, 'handlerBuilders', true) == handlers
     }
 
     def 'start process'() {
@@ -40,14 +41,14 @@ class AnnotationDispatcherTest extends Specification {
         RoundEnvironment roundEnvironment = DeepMock()
 
         when:
-        annotationDispatcher.dispatch(roundEnvironment)
+        roundProcessor.process(roundEnvironment)
 
         then:
-        1 * annotationDispatcher.getTypeElementsForAnnotation(roundEnvironment, Mutable) >> { [mutable] as Set }
-        1 * annotationDispatcher.getTypeElementsForAnnotation(roundEnvironment, Immutable) >> { [immutable] as Set }
-        1 * annotationDispatcher.processAndWrite(mutableHandlerBuilder, [mutable] as Set) >> {}
-        1 * annotationDispatcher.processAndWrite(immutableHandlerBuilder, [immutable] as Set) >> {}
-        1 * annotationDispatcher._
+        1 * roundProcessor.getTypeElementsForAnnotation(roundEnvironment, Mutable) >> { [mutable] as Set }
+        1 * roundProcessor.getTypeElementsForAnnotation(roundEnvironment, Immutable) >> { [immutable] as Set }
+        1 * roundProcessor.processAndWrite(mutableHandlerFactory, [mutable] as Set) >> {}
+        1 * roundProcessor.processAndWrite(immutableHandlerFactory, [immutable] as Set) >> {}
+        1 * roundProcessor._
         0 * _
     }
 
@@ -62,25 +63,22 @@ class AnnotationDispatcherTest extends Specification {
         JavaFile javaFile3 = Mock()
 
         when:
-        annotationDispatcher.processAndWrite(immutableHandlerBuilder, [immutable1, immutable2] as Set)
+        roundProcessor.processAndWrite(immutableHandlerFactory, [immutable1, immutable2] as Set)
 
         then:
-        1 * annotationDispatcher._
+        1 * roundProcessor._
         0 * _
 
         and:
         then:
-        1 * immutableHandlerBuilder.typeElement(immutable1) >> immutableHandlerBuilder
-        1 * immutableHandlerBuilder.build() >> immutableHandler
+        1 * immutableHandlerFactory.create(processor, immutable1) >> immutableHandler
         1 * immutableHandler.process() >> { [javaFile1] as Set }
         1 * fileWriter.write(javaFile1) >> {}
         0 * _
 
         and:
         then:
-
-        1 * immutableHandlerBuilder.typeElement(immutable2) >> immutableHandlerBuilder
-        1 * immutableHandlerBuilder.build() >> immutableHandler
+        1 * immutableHandlerFactory.create(processor, immutable2) >> immutableHandler
         1 * immutableHandler.process() >> { [javaFile2, javaFile3] as Set }
         1 * fileWriter.write(javaFile2) >> {}
         1 * fileWriter.write(javaFile3) >> {}
@@ -93,11 +91,11 @@ class AnnotationDispatcherTest extends Specification {
         TypeElement wrongClass = Stub { kind >> FIELD }
 
         when:
-        def res = annotationDispatcher.getTypeElementsForAnnotation(roundEnvironment, Immutable)
+        def res = roundProcessor.getTypeElementsForAnnotation(roundEnvironment, Immutable)
 
         then:
         1 * roundEnvironment.getElementsAnnotatedWith(Immutable) >> { [classAnnotated, wrongClass] as Set }
-        1 * annotationDispatcher._
+        1 * roundProcessor._
         0 * _
 
         expect:

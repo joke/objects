@@ -46,7 +46,7 @@ class ConstructorTest extends Specification {
 
     def 'constructor sets properties'() {
         setup:
-        Person parent = Mock()
+        ImmutablePerson parent = Mock()
 
         def person = new PersonImpl('John Doe', [parent])
 

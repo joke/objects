@@ -15,26 +15,27 @@ import java.util.Set;
 import static javax.lang.model.util.ElementFilter.typesIn;
 
 @Singleton
-public class AnnotationDispatcher {
+public class RoundProcessor {
 
+    private final Processor processor;
     private final FileWriter fileWriter;
-    private final Map<Class<? extends Annotation>, Handler.Builder<?, ?>> handlerBuilders;
+    private final Map<Class<? extends Annotation>, Handler.Factory<?>> handlerBuilders;
 
     @Inject
-    public AnnotationDispatcher(final FileWriter fileWriter, final Map<Class<? extends Annotation>, Handler.Builder<?, ?>> handlerBuilders) {
+    public RoundProcessor(final Processor processor, final FileWriter fileWriter, final Map<Class<? extends Annotation>, Handler.Factory<?>> handlerFactories) {
+        this.processor = processor;
         this.fileWriter = fileWriter;
-        this.handlerBuilders = handlerBuilders;
+        this.handlerBuilders = handlerFactories;
     }
 
-    public void dispatch(final RoundEnvironment roundEnvironment) {
+    public void process(final RoundEnvironment roundEnvironment) {
         handlerBuilders.forEach((annotation, handler) -> processAndWrite(handler, getTypeElementsForAnnotation(roundEnvironment, annotation)));
     }
 
     @VisibleForTesting
-    protected void processAndWrite(final Handler.Builder<?, ?> handlerBuilder, final Set<TypeElement> typeElements) {
+    protected void processAndWrite(final Handler.Factory<?> handlerFactory, final Set<TypeElement> typeElements) {
         typeElements.stream()
-                .map(handlerBuilder::typeElement)
-                .map(Handler.Builder::build)
+                .map(typeElement -> handlerFactory.create(processor, typeElement))
                 .map(Handler::process)
                 .flatMap(Collection::stream)
                 .forEach(fileWriter::write);
@@ -44,5 +45,4 @@ public class AnnotationDispatcher {
     protected Set<TypeElement> getTypeElementsForAnnotation(final RoundEnvironment roundEnvironment, final Class<? extends Annotation> annotation) {
         return typesIn(roundEnvironment.getElementsAnnotatedWith(annotation));
     }
-
 }

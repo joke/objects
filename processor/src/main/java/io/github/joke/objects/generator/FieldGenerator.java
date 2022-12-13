@@ -25,7 +25,7 @@ public class FieldGenerator {
         this.attribute = attribute;
     }
 
-    public Set<FieldSpec> getField() {
+    public Set<FieldSpec> generate() {
         return singleton(buildField(attribute));
     }
 

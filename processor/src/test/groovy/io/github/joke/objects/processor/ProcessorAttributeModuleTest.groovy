@@ -87,7 +87,7 @@ class ProcessorAttributeModuleTest extends Specification {
         def res = ProcessorModule.provideGeneratedAnnotation(generatedAnnotationGenerator)
 
         then:
-        1 * generatedAnnotationGenerator.generatedAnnotation >> annotationSpec
+        1 * generatedAnnotationGenerator.generate() >> annotationSpec
         0 * _
 
         expect:

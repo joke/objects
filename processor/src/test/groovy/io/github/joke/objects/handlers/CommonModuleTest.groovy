@@ -19,7 +19,6 @@ class CommonModuleTest extends Specification {
 
     def 'provide provide properties'() {
         setup:
-        AttributeHandler attributeComponent = Mock()
         AttributeExtractor attributeExtractor = Mock()
 
         when:
@@ -57,7 +56,7 @@ class CommonModuleTest extends Specification {
         def res = CommonModule.provideImplementation(typeGenerator)
 
         then:
-        1 * typeGenerator.javaFile >> { [fieldSpec] as Set }
+        1 * typeGenerator.generate() >> { [fieldSpec] as Set }
         0 * _
 
         expect:
@@ -90,7 +89,7 @@ class CommonModuleTest extends Specification {
         def res = CommonModule.provideConstructors(constructorGenerator)
 
         then:
-        1 * constructorGenerator.constructors >> { [methodSpec] as Set }
+        1 * constructorGenerator.generate() >> { [methodSpec] as Set }
         0 * _
 
         expect:

@@ -31,7 +31,7 @@ public class ImplementationFileGenerator {
         this.typeElement = typeElement;
     }
 
-    public Set<JavaFile> getJavaFile() {
+    public Set<JavaFile> generate() {
         final TypeSpec spec = type
                 .addOriginatingElement(typeElement)
                 .addFields(fields)

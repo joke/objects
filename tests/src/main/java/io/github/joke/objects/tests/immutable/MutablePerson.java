@@ -12,7 +12,4 @@ public abstract class MutablePerson {
 
     @NotNull
     abstract String getNonNullName();
-
-    abstract String getA();
-
 }

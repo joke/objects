@@ -29,7 +29,7 @@ public class ConstructorGenerator {
         this.attributes = attributes;
     }
 
-    public Set<MethodSpec> getConstructors() {
+    public Set<MethodSpec> generate() {
         return singleton(buildAllArgsConstructor());
     }
 

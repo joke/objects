@@ -20,7 +20,7 @@ class GeneratedAnnotationGeneratorTest extends Specification {
 
     def 'generated annotation for is java version dependent'() {
         when:
-        def res = generatedAnnotationGenerator.generatedAnnotation
+        def res = generatedAnnotationGenerator.generate()
 
         then:
         1 * processingEnvironment.sourceVersion >> javaVersion

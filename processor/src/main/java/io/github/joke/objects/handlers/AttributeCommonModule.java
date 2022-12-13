@@ -16,7 +16,7 @@ public interface AttributeCommonModule {
     @AttributeScope
     @ElementsIntoSet
     static Set<FieldSpec> getField(final FieldGenerator fieldGenerator) {
-        return fieldGenerator.getField();
+        return fieldGenerator.generate();
     }
 
     @Provides

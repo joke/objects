@@ -12,11 +12,11 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static java.beans.Introspector.decapitalize;
-import static javax.lang.model.element.ElementKind.METHOD;
 import static javax.lang.model.element.Modifier.ABSTRACT;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.STATIC;
+import static javax.lang.model.util.ElementFilter.methodsIn;
 
 @TypeElementScope
 public class AttributeExtractor {
@@ -34,9 +34,7 @@ public class AttributeExtractor {
     }
 
     public List<Attribute> getAttributes() {
-        final List<Attribute> collect = elements.getAllMembers(typeElement).stream()
-                .filter(element -> element.getKind() == METHOD)
-                .map(ExecutableElement.class::cast)
+        return methodsIn(elements.getAllMembers(typeElement)).stream()
                 .filter(executableElement -> executableElement.getModifiers().contains(ABSTRACT))
                 .filter(executableElement -> !executableElement.getModifiers().contains(PRIVATE))
                 .filter(executableElement -> !executableElement.getModifiers().contains(FINAL))
@@ -45,7 +43,6 @@ public class AttributeExtractor {
                 .filter(executableElement -> executableElement.getReturnType().getKind() != TypeKind.VOID)
                 .map(this::buildAttribute)
                 .collect(toList());
-        return collect;
     }
 
     @VisibleForTesting

@@ -25,7 +25,7 @@ public class GeneratedAnnotationGenerator {
         this.processingEnvironment = processingEnvironment;
     }
 
-    public AnnotationSpec getGeneratedAnnotation() {
+    public AnnotationSpec generate() {
         final boolean isJava9 = compare(processingEnvironment.getSourceVersion(), RELEASE_8) > 0;
         final String generatorAnnotationPackage = isJava9 ? "javax.annotation.processing" : "javax.annotation";
         return AnnotationSpec.builder(ClassName.get(generatorAnnotationPackage, "Generated"))

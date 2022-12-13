@@ -69,7 +69,7 @@ public interface CommonModule {
     @TypeElementScope
     @ElementsIntoSet
     static Set<JavaFile> provideImplementation(final ImplementationFileGenerator implementationFileGenerator) {
-        return implementationFileGenerator.getJavaFile();
+        return implementationFileGenerator.generate();
     }
 
     @Provides
@@ -82,6 +82,6 @@ public interface CommonModule {
     @TypeElementScope
     @ElementsIntoSet
     static Set<MethodSpec> provideConstructors(final ConstructorGenerator constructorGenerator) {
-        return constructorGenerator.getConstructors();
+        return constructorGenerator.generate();
     }
 }

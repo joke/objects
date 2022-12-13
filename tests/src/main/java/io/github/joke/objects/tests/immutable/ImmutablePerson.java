@@ -12,7 +12,4 @@ public abstract class ImmutablePerson {
 
     @NotNull
     abstract String getNotNullName();
-
-    abstract String getA();
-
 }

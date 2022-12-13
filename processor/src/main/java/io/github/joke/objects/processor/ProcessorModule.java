@@ -51,7 +51,7 @@ interface ProcessorModule {
     @Singleton
     @Named("generated")
     static AnnotationSpec provideGeneratedAnnotation(final GeneratedAnnotationGenerator generatedAnnotationGenerator) {
-        return generatedAnnotationGenerator.getGeneratedAnnotation();
+        return generatedAnnotationGenerator.generate();
     }
 
     @IntoMap

@@ -7,7 +7,6 @@ plugins {
 }
 
 dependencies {
-
     errorprone enforcedPlatform(project(':dependencies'))
     errorprone 'com.google.errorprone:error_prone_core'
     errorprone 'com.uber.nullaway:nullaway'

@@ -1,21 +1,22 @@
 package io.github.joke.objects.customize;
 
-import java.lang.annotation.Annotation;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.FIELD;
+import static io.github.joke.objects.customize.ToString.Style.STRING_JOINER;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 @Documented
 @Retention(SOURCE)
-@Target({TYPE, FIELD})
-public @interface OnConstructor {
+@Target({TYPE})
+public @interface ToString {
 
-    Class<? extends Annotation> value();
+    Style style() default STRING_JOINER;
 
-    String argument() default "";
-
+    enum Style {
+        STRING_JOINER,
+        TO_STRING_BUILDER
+    }
 }

@@ -16,6 +16,8 @@ jobs:
       id: release
       with:
         release-type: simple
+        signoff: Joke de Buhr <joke@xckk.de>
+        token: ${{ secrets.RELEASE_PLEASE }}
 
   publish:
     needs: release-please
@@ -30,10 +32,12 @@ jobs:
         gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
     - uses: actions/setup-java@v3
       with:
-        java-version: '17'
+        java-version: 17
         distribution: zulu
+    - name: gradle setup
+      uses: gradle/gradle-build-action@v2
     - name: build
-      run: ./gradlew check
+      run: ./gradlew build -x test
     - name: publish
       run: ./gradlew publish
       env:

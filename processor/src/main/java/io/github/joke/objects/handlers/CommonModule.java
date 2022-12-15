@@ -10,6 +10,7 @@ import dagger.multibindings.ElementsIntoSet;
 import io.github.joke.objects.generator.ConstructorGenerator;
 import io.github.joke.objects.generator.ImplementationFileGenerator;
 import io.github.joke.objects.generator.ImplementationTypeGenerator;
+import io.github.joke.objects.generator.ToStringGenerator;
 import io.github.joke.objects.generator.extractors.Attribute;
 import io.github.joke.objects.generator.extractors.AttributeExtractor;
 import io.github.joke.objects.processor.Processor;
@@ -83,5 +84,12 @@ public interface CommonModule {
     @ElementsIntoSet
     static Set<MethodSpec> provideConstructors(final ConstructorGenerator constructorGenerator) {
         return constructorGenerator.generate();
+    }
+
+    @Provides
+    @TypeElementScope
+    @ElementsIntoSet
+    static Set<MethodSpec> provideToString(final ToStringGenerator toStringGenerator) {
+        return toStringGenerator.generate();
     }
 }

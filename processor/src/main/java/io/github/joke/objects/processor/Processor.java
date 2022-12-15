@@ -4,6 +4,7 @@ import com.squareup.javapoet.AnnotationSpec;
 import dagger.BindsInstance;
 import dagger.Component;
 import io.github.joke.objects.generator.extractors.AnnotationExtractor;
+import io.github.joke.objects.utils.AnnotationUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -22,6 +23,7 @@ public abstract class Processor {
     public abstract Types types();
     public abstract Elements elements();
     public abstract AnnotationExtractor annotationExtractor();
+    public abstract AnnotationUtils annotationUtils();
     protected abstract RoundProcessor roundProcessor();
 
     public static RoundProcessor create(final ProcessingEnvironment processingEnvironment) {

@@ -1,5 +1,43 @@
 # Changelog
 
+## 1.0.0 (2023-07-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* renamed bean -> mutable, value -> immutable
+
+### Features
+
+* abstract class support ([f6726f0](https://github.com/joke/objects/commit/f6726f04fa0505240408297bbaa287d3c676f754))
+* added Value tests ([eaa25c4](https://github.com/joke/objects/commit/eaa25c4f67d47084e0f8d52e2e18456a59282660))
+* basic setup ([ff26093](https://github.com/joke/objects/commit/ff2609396c9090b7fa798b463ed6ca3f3d4f2190))
+* basic toString support ([6e98509](https://github.com/joke/objects/commit/6e98509355812797d91f873672c20c18d4d249fd))
+* generate all-args-constructor ([9036fb2](https://github.com/joke/objects/commit/9036fb2120075ca9f32319aa714b5c8c703fe62a))
+* generate getters ([d842f9e](https://github.com/joke/objects/commit/d842f9e322d6b58ed9975c30ed06c0c85258f6c4))
+* generate properties ([04b65c5](https://github.com/joke/objects/commit/04b65c5cc79a02c87b68282dcfd22089f1e5a55d))
+* generate setters ([dbf1c1d](https://github.com/joke/objects/commit/dbf1c1d8a30e2e3401b547baf7500001cc8155f7))
+* generator annotation on class ([1454b6b](https://github.com/joke/objects/commit/1454b6bdc3b53a367ff96295d4fca8411f3525aa))
+* read properties from base classes ([82b0211](https://github.com/joke/objects/commit/82b02112fe1c3e257838a58a7972a80d4c4f620e))
+
+
+### Bug Fixes
+
+* claim interfaces as proccessed ([65585d6](https://github.com/joke/objects/commit/65585d64d80be8dc5fba6ba71b3b88f6d46f583a))
+* correct annotation retention ([4d5c365](https://github.com/joke/objects/commit/4d5c365e13125b4ea8cbf4a4a3175c2d2322c80b))
+* correct processor in generated annotation ([5c7db3b](https://github.com/joke/objects/commit/5c7db3bcef417aefb213bba61d3821dd66436ec3))
+* filter properties abstract ([e9eafc6](https://github.com/joke/objects/commit/e9eafc6c4469b4a5336a510f9d52c28ef1f3b55d))
+* incremental compile. provide origin for gradle ([00c3ee6](https://github.com/joke/objects/commit/00c3ee621cfb7877a80c780359b3791c08a558b4))
+* make target annotation injectable ([9db4c7e](https://github.com/joke/objects/commit/9db4c7e6468aa30d3615aca366285a6673e2e8f6))
+* remove setter test from getter test file ([cb538f1](https://github.com/joke/objects/commit/cb538f1d9907e29ba0e7af8fae23231eef4262f4))
+* value processing ([83f9e80](https://github.com/joke/objects/commit/83f9e80437e17b4ad09b4b2d98f2a2ae8903268c))
+* value tests ([f8a6efd](https://github.com/joke/objects/commit/f8a6efdf72c2d68c151eb11cc04810f2c7f9b041))
+
+
+### Code Refactoring
+
+* renamed bean -&gt; mutable, value -> immutable ([60fb84c](https://github.com/joke/objects/commit/60fb84c5904ecac5bd907b23901ed30d0f5835b2))
+
 ## 1.0.0 (2022-04-02)
 
 
